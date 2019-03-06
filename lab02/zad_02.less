@@ -2,25 +2,30 @@
 body {
     background-color: rgb(220, 220, 220);
     
-    padding-top: 50px;
+    //padding-top: 50px;
     
 }
 
-div.tresc{
+#tresc{
 
-    position: relative;
-    padding-top: 50px;
+    position: fixed;
+    overflow: auto;
+    bottom: 0;
+    top: calc(10%);;
+    right:0 ;
+    left: 0;
+
+    
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 #menu{
     position: fixed;
-
-    top: 10px;
-    left: 10px;
     background-color: azure;
     border-style: ridge;
-    width: 100%;
-    padding: 5px;
+    width: calc(100%);
+    padding: calc(1%);
     padding-left: 30px;
     
     span.el_menu{
