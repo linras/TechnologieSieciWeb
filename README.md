@@ -1,3 +1,3 @@
 # Antonina Brzeska
 
-email?
+email: aformela2@sigma.ug.edu.pl
