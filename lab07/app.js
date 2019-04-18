@@ -13,13 +13,16 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+
 var path = require('path');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+//ejs sample
 app.get('/test2', routes.index('wymiata'));
+//app.get('/test3', routes.move());
 
-getMarks = function getMarks(W, Z){
+function getMarks(W, Z){
     ret = {};
     black=0;
     white=0;
@@ -32,15 +35,9 @@ getMarks = function getMarks(W, Z){
                 const element = Z[indexZ];
                 if (Z[indexZ]==elW && elW!=W[indexZ]) {
                     white++;
-                    break;  //in foreach impossible
+                    break;  //in foreach break impossible
                 }
             }
-            // Z.forEach((elZ, indexZ) => {
-            //     if(elW==elZ){
-            //         white++;
-            //         break;
-            //     }
-            // });
         }
     });
     ret.white=white;
@@ -63,15 +60,15 @@ app.get('/', (_req, res) => {
     res.send('Dziala GET');
   });
 
-app.post('/game/new', (req, res) => {
-    res.json({
-        game: uuidv1(), //generate id
-        size: req.body.size,
-        colors: req.body.colors,
-        steps: 10
-    });
+// app.post('/game/new', (req, res) => {
+//     res.json({
+//         game: uuidv1(), //generate id
+//         size: req.body.size,
+//         colors: req.body.colors,
+//         steps: 10
+//     });
 
-});
+// });
 
 app.post('/game/move', (req, res) =>{
     
@@ -85,7 +82,9 @@ app.post('/game/move', (req, res) =>{
     });
 });
 
-
+app.post('/game/move', routes.move);
+app.post('/game/new', routes.newGame);
+app.post('/s/', routes.test);
 
 app.listen(3000, () =>{
     console.log("Serwer dziala na porcie 3000");
