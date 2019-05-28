@@ -1,42 +1,42 @@
 /* jshint strict: global, esversion: 6, devel: true, node:true */
 'use strict';
 
-const fun1 = (cb) => {
-  //zeby setTimeout sie nie podkreslal set node:tue
-  setTimeout(() =>{
-    console.log('jestew w fun1');
-    cb(123);
-  }, Math.random()*1000);
+const fun1 = (txt, cb1) => {
+    setTimeout(() => {
+        return cb1(txt);
+    }, Math.random() * 1000);
 };
 
-const fun2 = (arg, cb) => {
-  setTimeout(() =>{
-    console.log('jestew w fun2');
-    cb(74);
-  }, Math.random()*1000);
+const fun2 = (txt, cb2) => {
+    setTimeout(() => {
+        return cb2(txt);
+    }, Math.random() * 1000);
 };
 
-const razem = (f1, f2, cb) =>{
-  let tab=[];
-  //wynik to wynik f1
-  f1((wynik)=>{
+const cb = (txt) => {
+    console.log(txt);
+}
 
-  });
-};
+const razem = (fun1, fun2, cb) => {
 
+    let tab = [];
 
-// const razem = (f1, f2, cb) =>{
-//   //wynik to wynik f1
-//   f1((wynik)=>{
-//     f2(wynik, (wynik2)=>{
-//       cb(wynik2);
-//     });
-//   });
-// };
+    fun1("fun1", (element) => {
+        tab.push(element);
+        if (tab.length === 2) {
+            cb(tab);
+        }
+    });
 
-razem(fun1, fun2, (wynik2)=>{
-  console.log(wynik2);
-});
+    fun2("fun2", (element) => {
+        tab.push(element);
+        if (tab.length === 2) {
+            cb(tab);
+        }
+    });
+}
+
+razem(fun1, fun2, cb);
 
 
 //poKolei(fun1('napis'), fun2(4), (dane))

@@ -1,60 +1,41 @@
 /* jshint strict: global, esversion: 6, devel: true, node:true */
 'use strict';
 
-const fun1 = (cb) => {
-  //zeby setTimeout sie nie podkreslal set node:tue
-  setTimeout(() =>{
-    console.log('jestew w fun1');
-    cb(123);
-  }, Math.random()*1000);
+/* jshint strict: global, esversion: 6, devel: true, node:true */
+'use strict';
+
+const fun1 = (txt, cb1) => {
+    setTimeout(() => {
+        return cb1(txt + " fun1 ");
+    }, Math.random() * 1000);
 };
 
-const fun2 = (arg, cb) => {
-  setTimeout(() =>{
-    console.log('jestew w fun2');
-    cb(74);
-  }, Math.random()*1000);
+const fun2 = (txt, cb2) => {
+    setTimeout(() => {
+        return cb2(txt + " fun2 ");
+    }, Math.random() * 1000);
 };
 
-const poKoleiTab = (funTab, cb) =>{
-  funTab.forEach((element,index) => {
-    if(funTab.lenght<index)(
+const cb = (txt) => {
+    console.log(txt);
+}
 
-    )//do zrobienia
-  });
-  //wynik to wynik f1
-  f1((wynik)=>{
-    f2(wynik, (wynik2)=>{
-      cb(wynik2);
-    });
-  });
+
+const poKoleiTab = (tabFunkcji, cb) => {
+    let pomoc = "main";
+    const main = (index) => {
+        tabFunkcji[index](pomoc, (e) => {
+            pomoc = e;
+            if (index === tabFunkcji.length - 1) {
+                cb(e);
+            } else {
+                main(index + 1);
+            }
+        });
+    };
+    main(0);
 };
 
 
 
-// poKoleiTab(fun1, fun2, (wynik2)=>{
-//   console.log(wynik2);
-// });
-
-const poKolei = (f1, f2, cb) =>{
-  //wynik to wynik f1
-  f1((wynik)=>{
-    f2(wynik, (wynik2)=>{
-      cb(wynik2);
-    });
-  });
-};
-
-poKolei(fun1, fun2, (wynik2)=>{
-  console.log(wynik2);
-});
-
-
-//poKolei(fun1('napis'), fun2(4), (dane))
-
-// poKolei(fun1('napis'), (dane) =>{
-//   console.log('mam: ${dane}');
-//   poKolei(fun2(7), (dane) =>{
-//     console.log('dane drugie: ${dane}');
-//   });
-// });
+poKoleiTab([fun1, fun2, fun1], cb);
