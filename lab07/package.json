@@ -2,9 +2,9 @@
   "name": "lab07",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,8 @@
     "morgan": "^1.9.1",
     "path": "^0.12.7",
     "path.join": "^1.0.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "v1": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

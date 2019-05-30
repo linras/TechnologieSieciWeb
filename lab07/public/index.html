@@ -1,18 +1,63 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>JSONP z axios</title>
-    <link rel="stylesheet" href="../css/styl.css">
-    <script src="../lib/axios.min.js"></script>
-    <script src="../lib/axios-jsonp.js"></script>
-    <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./stylesheet/style.css">
+    <title>Mastermind</title>
 </head>
 
 <body>
-    <h1>JSONP z axios</h1>
+    <div id="menu">
+        <label>
+            size <input id="menu-size" value='1' type="number">
+            <span id="uwaga-size"></span>
+        </label>
+        <label>
+            colors <input id="menu-colors" value='1' type="number">
+            <span id="uwaga-colors"></span>
+        </label>
+        <label>
+            steps <input id="menu-steps" type="number">
+            <span id="uwaga-steps"></span>
+        </label>
+        <button id="menu-start">NEW GAME</button>
+        <div id="uwaga"></div>
+    </div>
 
+    <div id="game">
+        <div id="status">
+
+        </div>
+
+        <div id="przebieg">
+
+        </div>
+
+        <div id="game-move">
+
+        </div>
+
+
+        <button id="play">PLAY</button>
+
+
+    </div>
+
+    <div id="won">
+        You have won!
+        <button id="ponownie1">try again</button>
+    </div>
+
+    <div id="lost">
+        Game over...
+        <button id="ponownie2">try again</button>
+    </div>
+
+
+    <script src="script.js"></script>
 </body>
 
 </html>
