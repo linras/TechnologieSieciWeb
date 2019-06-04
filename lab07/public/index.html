@@ -6,28 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="./stylesheet/style.css">
-    <title>Mastermind</title>
+    <title>MasterMind</title>
 </head>
 
 <body>
+
     <div id="menu">
         <label>
-            size <input id="menu-size" value='1' type="number">
-            <span id="uwaga-size"></span>
+            Rozmiar <input id="menu-rozmiar" value='1' type="number">
+            <span id="uwaga-rozmiar"></span>
         </label>
         <label>
-            colors <input id="menu-colors" value='1' type="number">
-            <span id="uwaga-colors"></span>
+            Kolory <input id="menu-kolory" value='1' type="number">
+            <span id="uwaga-kolory"></span>
         </label>
         <label>
-            steps <input id="menu-steps" type="number">
-            <span id="uwaga-steps"></span>
+            Kroki <input id="menu-kroki" type="number">
+            <span id="uwaga-kroki"></span>
         </label>
-        <button id="menu-start">NEW GAME</button>
+        <button id="menu-start">Nowa Gra</button>
         <div id="uwaga"></div>
     </div>
 
-    <div id="game">
+    <div id="gra">
         <div id="status">
 
         </div>
@@ -36,28 +37,28 @@
 
         </div>
 
-        <div id="game-move">
+        <div id="gra-ruch">
 
         </div>
 
 
-        <button id="play">PLAY</button>
+        <button id="graj">GRAJ</button>
 
 
     </div>
 
-    <div id="won">
-        You have won!
-        <button id="ponownie1">try again</button>
+    <div id="wygrana">
+        Wygrałeś
+        <button id="ponownie1">zagraj jeszcze raz</button>
     </div>
 
-    <div id="lost">
-        Game over...
-        <button id="ponownie2">try again</button>
+    <div id="przegrana">
+        Przegrałeś
+        <button id="ponownie2">zagraj jeszcze raz</button>
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="javascripts/master.js"></script>
 </body>
 
 </html>

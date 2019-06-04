@@ -1,0 +1,92 @@
+body {
+  background-color: honeydew;
+}
+body #menu,
+body #gra,
+body #wygrana,
+body #przegrana {
+  padding: 5%;
+  margin-top: 5%;
+  width: 40%;
+  position: relative;
+  left: 25%;
+  background-color: khaki;
+  font-size: 30px;
+  color: maroon;
+  text-align: center;
+}
+body #menu label,
+body #gra label,
+body #wygrana label,
+body #przegrana label {
+  display: block;
+  padding: 1%;
+}
+body #menu label input,
+body #gra label input,
+body #wygrana label input,
+body #przegrana label input {
+  width: 50%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+body #menu label span,
+body #gra label span,
+body #wygrana label span,
+body #przegrana label span {
+  display: block;
+  color: white;
+  font-size: 15px;
+}
+body #menu button,
+body #gra button,
+body #wygrana button,
+body #przegrana button {
+  width: 50%;
+  background-color: #36b03c;
+  font-size: 20px;
+  color: white;
+  padding: 15px 10px;
+  margin-top: 20px;
+}
+body #menu #uwaga,
+body #gra #uwaga,
+body #wygrana #uwaga,
+body #przegrana #uwaga {
+  display: block;
+  color: white;
+  font-size: 15px;
+}
+body #gra {
+  display: none;
+}
+body #gra .kwadrat,
+body #gra .kwadratP {
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  color: black;
+  border: 2px solid black;
+  position: static;
+  display: inline-block;
+}
+body #gra #status,
+body #gra #przebieg,
+body #gra #gra-ruch {
+  width: 50%;
+  position: relative;
+  left: 25%;
+}
+body #wygrana {
+  display: none;
+}
+body #przegrana {
+  display: none;
+}
+body .krok {
+  margin: 2px;
+  border-style: solid;
+  border-color: yellow;
+  border-width: 2px;
+}
