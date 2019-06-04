@@ -20,6 +20,48 @@ export default new Router({
       component: function () { 
         return import(/* webpackChunkName: "about" */ './views/About.vue')
       }
-    }
+    },
+    {
+      path: "/panel",
+      name: "panel",
+      component: () => import("./views/Panel.vue")
+  },
+  {
+      path: "/sedziowie",
+      name: "sedziowie",
+      component: () => import("./views/Sedzia.vue")
+  },
+  {
+      path: "/konie",
+      name: "konie",
+      component: () => import("./views/Kon.vue")
+  },
+  {
+      path: "/klasy",
+      name: "klasy",
+      component: () => import("./views/Klasa.vue")
+  },
+  {
+      path: "/kon/:id",
+      name: "kon",
+      component: () => import("./views/KonDetails.vue")
+  },
+  {
+      path: "/sedzia/:id",
+      name: "sedzia",
+      component: () => import("./views/SedziaDetails.vue")
+  },
+  {
+      path: "/klasa/:id",
+      name: "klasa",
+      component: () => import("./views/KlasaDetails.vue")
+  },
+  {
+      path: "/kon/:id/ocena",
+      name: "konocena",
+      component: () => import("./views/RateKon.vue")
+  }
+
+
   ]
 })

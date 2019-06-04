@@ -1,6 +1,6 @@
 <template>
     <div class="klasy">
-        <KlasaCrud/>
+        <KlasaData/>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
     export default {
         name: "klasy",
         components: {
-            KlasaCrud
+            KlasaData
         }
     };
 
