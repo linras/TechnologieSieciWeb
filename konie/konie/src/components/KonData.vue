@@ -5,6 +5,8 @@
             Klasa {{ klasa }}
             <a v-on:click="klasa += 1">nastepna</a>
         </h1>
+        
+        <router-link to="/konie/new"> dodaj konia </router-link>
         <table>
                 <tr>
                     <th>Nr</th>
@@ -24,7 +26,7 @@
                     <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
                     <td v-if="item['klasa'] == klasa">
                         <router-link :to="{ name: 'kon', params: { id: item['id'] }}">Edytuj </router-link>|
-                        <router-link :to="{ name: 'konocena', params: { id: item['id'] }}">Oceń</router-link>
+                        <router-link :to="{ name: 'konocena', params: { id: item['id'] }}">Noty</router-link>
                     </td>
                 </tr>
         </table>

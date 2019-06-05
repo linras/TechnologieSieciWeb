@@ -3,7 +3,7 @@
         <h1>
             Klasy
         </h1>
-        <router-link to="/klasy/new"> dodaj </router-link>
+        <router-link to="/klasy/new"> dodaj klasę </router-link>
         <table>
                 <tr>
                     <th>Numer</th>
@@ -15,7 +15,7 @@
                     <td>{{ item['numer'] }}</td>
                     <td>{{ item['kat'] }}</td>
                     <td>
-                        <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia">{{ sedzia }}  </span>
+                        <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia"><td>{{ sedzia }} </td> </span>
                     </td>
                     <td>
                         <router-link :to="{ name: 'klasa', params: { id: item['id'] }}">Edytuj</router-link>

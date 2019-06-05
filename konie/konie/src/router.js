@@ -62,9 +62,9 @@ export default new Router({
     component: () => import("./views/KlasaCreate.vue")
 },
   {
-      path: "/kon/:id/ocena",
+      path: "/kon/ocena/:id",
       name: "konocena",
-      component: () => import("./views/RateKon.vue")
+      component: () => import("./views/KonOcena.vue")
   }
 
 
