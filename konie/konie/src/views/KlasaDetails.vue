@@ -43,7 +43,9 @@
             </div>
             <div>
                 <router-link to="/klasy">
-                    <button v-on:click="handleSubmit" class="button is-link">OK</button>
+                    <button class="button is-link">POWRÓT DO KLAS</button>
+                    <button v-on:click="handleSubmit" class="button is-link">EDYTUJ</button>
+                    <button v-on:click="handleDelete" class="button is-link">USUŃ</button>
                 </router-link>
             </div>
         </div>
@@ -96,6 +98,18 @@
                         console.log(err);
                     });
             },
+            handleDelete () {
+                this.$http
+                    .delete(
+                        "http://localhost:3000/klasy/" + this.id, this.klasa)
+                    .then(response => {
+                        console.log(response);
+                        this.ajaxRequest = false;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            },
             fetchSedziowie () {
                 this.$http
                     .get("http://localhost:3000/sedziowie")
@@ -128,18 +142,18 @@
             onSelectChange (event) {
                 let sedziowie = this.sedziowie;
                 let komisja = this.komisja;
-                let choice;
+                let wyb;
                 if (event.srcElement.id === "pierwszy") {
-                    choice = 0;
+                    wyb = 0;
                 } else if (event.srcElement.id === "drugi") {
-                    choice = 1;
+                    wyb = 1;
                 } else if (event.srcElement.id === "trzeci") {
-                    choice = 2;
+                    wyb = 2;
                 }
 
                 sedziowie.forEach(function (sedzia) {
-                    if (komisja[choice]["sedzia"] === sedzia["sedzia"]) {
-                        komisja[choice]["id"] = sedzia["id"];
+                    if (komisja[wyb]["sedzia"] === sedzia["sedzia"]) {
+                        komisja[wyb]["id"] = sedzia["id"];
                     }
                 });
                 document.getElementById("error-label").style.display = "none";
