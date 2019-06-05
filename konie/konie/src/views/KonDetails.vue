@@ -1,62 +1,49 @@
 <template>
     <div v-if="kon !== null">
         <div class="field is-grouped">
-            <div class="control submit-button">
-                <button v-on:click="handleSubmit" class="button is-link">Submit</button>
-            </div>
         </div>
-        <div v-if="kon !== null" class="columns is-multiline is-12">
+        <div v-if="kon !== null">
             <div class="column">
                 <div class="border">
-                    <div v-if="kon !== null" class="columns is-multiline is-12">
-                        <div class="column kon-details is-one-third">
+                    <div v-if="kon !== null">
+                        
+                                <h3>Koń</h3>
+                        <div >
                             <div class="field">
-                                <label class="label has-text-left">Numer</label>
                                 <div class="control">
-                                    <input v-model="kon['numer']" class="input" type="text">
+                                    Numer <input v-model="kon['numer']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Klasa</label>
                                 <div class="control">
-                                    <input v-model="kon['klasa']" class="input" type="text">
+                                    Klasa <input v-model="kon['klasa']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Nazwa</label>
                                 <div class="control">
-                                    <input v-model="kon['nazwa']" class="input" type="text">
+                                    Nazwa <input v-model="kon['nazwa']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Płeć</label>
                                 <div class="control">
-                                    <div class="select">
-                                        <select v-model="kon['plec']">
-                                            <option>kl.</option>
-                                            <option>og.</option>
-                                        </select>
-                                    </div>
+                                    Płeć <input v-model="kon['plec']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
-                        <div class="column kon-details is-one-third">
+                        <div>
                             <div class="field">
-                                <label class="label has-text-left">Kraj</label>
                                 <div class="control">
-                                    <input v-model="kon['kraj']" class="input" type="text">
+                                    Kraj <input v-model="kon['kraj']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Rocznik</label>
                                 <div class="control">
-                                    <input v-model="kon['rocznik']" class="input" type="text">
+                                    Rocznik <input v-model="kon['rocznik']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Masc</label>
                                 <div class="control">
-                                    <input v-model="kon['masc']" class="input" type="text">
+                                    Masc <input v-model="kon['masc']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -64,33 +51,27 @@
                 </div>
             </div>
         </div>
-        <div v-if="kon !== null" class="columns is-multiline is-12">
+        <div v-if="kon !== null">
             <div class="column">
                 <div class="border">
-                    <div v-if="kon !== null" class="columns is-multiline is-12">
-                        <div class="column kon-specifics is-one-third">
+                    <div v-if="kon !== null" >
                             <div class="field">
-                                <label class="label has-text-left">Hodowca</label>
-                                <label class="label lower-label has-text-left">Nazwa</label>
-                                <div class="control lower-input">
-                                    <input v-model="kon['hodowca']['nazwa']" class="input" type="text">
+                                <h3>Hodowca</h3>
+                                <div class="control">
+                                    Nazwa<input v-model="kon['hodowca']['nazwa']" class="input" type="text">
                                 </div>
-                                <label class="label lower-label has-text-left">Kraj</label>
-                                <div class="control lower-input">
-                                    <input v-model="kon['hodowca']['kraj']" class="input" type="text">
-                                </div>
+                                <div class="control">
+                                    Kraj<input v-model="kon['hodowca']['kraj']" class="input" type="text">
                             </div>
                         </div>
-                        <div class="column kon-specifics is-one-third">
+                        <div>
                             <div class="field">
-                                <label class="label has-text-left">Właściciel</label>
-                                <label class="label lower-label has-text-left">Nazwa</label>
-                                <div class="control lower-input">
-                                    <input v-model="kon['wlasciciel']['nazwa']" class="input" type="text">
+                                <h3>Właściciel</h3>
+                                <div class="control">
+                                    Nazwa<input v-model="kon['wlasciciel']['nazwa']" class="input" type="text">
                                 </div>
-                                <label class="label lower-label has-text-left">Kraj</label>
-                                <div class="control lower-input">
-                                    <input v-model="kon['wlasciciel']['kraj']" class="input" type="text">
+                                <div class="control">
+                                    Kraj<input v-model="kon['wlasciciel']['kraj']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -99,48 +80,38 @@
             </div>
         </div>
 
-        <div v-if="kon !== null" class="columns is-multiline is-12">
+        <div v-if="kon !== null">
             <div class="column">
                 <div class="border">
-                    <label class="label has-text-left label-title">Rodowód</label>
-                    <div v-if="kon !== null" class="columns is-multiline is-12">
-                        <div class="column kon-specifics is-one-fifth">
+                    <h3>Rodowód</h3>
+                    <div v-if="kon !== null">
+                        <div>
                             <div class="field">
-
-                                <label class="label lower-label has-text-left">O</label>
-                                <label class="label next-lower-label has-text-left">Nazwa</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['o']['nazwa']" class="input" type="text">
+                                <div class="control">
+                                    O nazwa <input v-model="kon['rodowod']['o']['nazwa']" class="input" type="text">
                                 </div>
-                                <label class="label next-lower-label has-text-left">Kraj</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['o']['kraj']" class="input" type="text">
+                                <div class="control">
+                                    O kraj<input v-model="kon['rodowod']['o']['kraj']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
                         <div class="column kon-specifics is-one-fifth">
                             <div class="field">
-                                <label class="label lower-label has-text-left">M</label>
-                                <label class="label next-lower-label has-text-left">Nazwa</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['m']['nazwa']" class="input" type="text">
+                                <div class="control">
+                                     M nazwa<input v-model="kon['rodowod']['m']['nazwa']" class="input" type="text">
                                 </div>
-                                <label class="label next-lower-label has-text-left">Kraj</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['m']['kraj']" class="input" type="text">
+                                <div class="control">
+                                    M kraj<input v-model="kon['rodowod']['m']['kraj']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
                         <div class="column kon-specifics is-one-fifth">
                             <div class="field">
-                                <label class="label lower-label has-text-left">OM</label>
-                                <label class="label next-lower-label has-text-left">Nazwa</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['om']['nazwa']" class="input" type="text">
+                                <div class="control">
+                                    OM nazwa<input v-model="kon['rodowod']['om']['nazwa']" class="input" type="text">
                                 </div>
-                                <label class="label next-lower-label has-text-left">Kraj</label>
-                                <div class="control next-lower-input">
-                                    <input v-model="kon['rodowod']['om']['kraj']" class="input" type="text">
+                                <div class="control">
+                                    OM kraj<input v-model="kon['rodowod']['om']['kraj']" class="input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -148,7 +119,13 @@
                 </div>
             </div>
         </div>
-
+    <div>
+        <router-link to="/konie">
+                    <button class="button is-link">POWRÓT DO KONI</button>
+                    <button v-on:click="handleSubmit" class="button is-link">EDYTUJ</button>
+                    <button v-on:click="handleDelete" class="button is-link">USUŃ</button>
+            </router-link>
+    </div>
     </div>
 </template>
 
@@ -167,6 +144,18 @@
             handleSubmit () {
                 this.$http
                     .put(
+                        "http://localhost:3000/konie/" + this.id, this.kon)
+                    .then(response => {
+                        console.log(response);
+                        this.ajaxRequest = false;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            },
+            handleDelete () {
+                this.$http
+                    .delete(
                         "http://localhost:3000/konie/" + this.id, this.kon)
                     .then(response => {
                         console.log(response);
@@ -216,9 +205,6 @@ a {
   margin-left: auto;
   margin-right: auto;
 }
-label {
-    color: white;
-}
 .kon-details,
 .submit-button {
   margin-left: 15vh;
@@ -243,12 +229,9 @@ label {
   margin-top: 5px;
 }
 .border {
-    border: 1px solid black;
     margin-left: 100px;
     margin-right: 100px;
     padding: 15px;
-    background-color: #23272A;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .label-title {
     margin-left: 140px;

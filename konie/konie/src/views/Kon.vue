@@ -1,6 +1,6 @@
 <template>
     <div class="kon">
-        <KonCrud/>
+        <KonData/>
     </div>
 </template>
 
@@ -11,20 +11,16 @@
     export default {
         name: "Kon",
         components: {
-            KonCrud
+            KonData
         },
         data: function () {
             return {
-                theComponent: "KonData",
-                somethingWeWantToPass: {
-                    test: "xd"
-                }
+                theComponent: "KonData"
             };
         },
         methods: {
             handleSwitchComponent (kon) {
                 this.theComponent = "KonDetails";
-                this.somethingWeWantToPass["kon"] = kon;
                 console.log(kon);
             }
         }

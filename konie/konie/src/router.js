@@ -57,6 +57,11 @@ export default new Router({
       component: () => import("./views/KlasaDetails.vue")
   },
   {
+    path: "/klasy/new",
+    name: "klasa",
+    component: () => import("./views/KlasaCreate.vue")
+},
+  {
       path: "/kon/:id/ocena",
       name: "konocena",
       component: () => import("./views/RateKon.vue")

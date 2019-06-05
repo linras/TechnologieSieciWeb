@@ -3,6 +3,7 @@
         <h1>
             Klasy
         </h1>
+        <router-link to="/klasy/new"> dodaj </router-link>
         <table>
                 <tr>
                     <th>Numer</th>
@@ -14,7 +15,7 @@
                     <td>{{ item['numer'] }}</td>
                     <td>{{ item['kat'] }}</td>
                     <td>
-                        <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia">{{ sedzia }}, </span>
+                        <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia">{{ sedzia }}  </span>
                     </td>
                     <td>
                         <router-link :to="{ name: 'klasa', params: { id: item['id'] }}">Edytuj</router-link>
@@ -71,7 +72,7 @@
                     klasa["sedziowie"] = [];
                     klasa["komisja"].forEach(function (komisja) {
                         sedziowie.forEach(function (sedzia) {
-                            if (komisja === sedzia["id"]) {
+                            if (komisja === sedzia["id"] && klasa["sedziowie"].length<3) {
                                 klasa["sedziowie"].push(sedzia["sedzia"]);
                             }
                         });

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/panel">Panel Kibica</router-link><span class="has-text-white"> | </span>
+      <router-link to="/panel">Panel Kibica</router-link> | 
       <router-link to="/sedziowie">Sedziowie</router-link> |
       <router-link to="/konie">Konie</router-link> |
       <router-link to="/klasy">Klasy</router-link>
