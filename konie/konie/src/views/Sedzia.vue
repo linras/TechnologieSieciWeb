@@ -1,6 +1,6 @@
 <template>
     <div class="sedzia">
-        <SedziaCrud/>
+        <SedziaData/>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
     export default {
         name: "sedzia",
         components: {
-            SedziaCrud
+            SedziaData
         }
     };
 
