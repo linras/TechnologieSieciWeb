@@ -5,7 +5,7 @@
                 <tr>
                     <th>Typ</th>
                     <th>Głowa</th>
-                    <th>Kloda</th>
+                    <th>Kłoda</th>
                     <th>Nogi</th>
                     <th>Ruch</th>
                     <th>Sędziowie</th>

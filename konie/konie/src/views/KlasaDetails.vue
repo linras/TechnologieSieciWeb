@@ -5,21 +5,19 @@
                 <div class="border">
                     <div v-if="klasa !== null">
                             <div class="field">
-                                <label>Numer</label>
                                 <div class="control">
-                                    <input v-model="klasa['numer']" class="input" type="text">
+                                    Numer<input v-model="klasa['numer']" class="input" type="text">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label has-text-left">Kategoria</label>
                                 <div class="control">
-                                    <input v-model="klasa['kat']" class="input" type="text">
+                                    Kategoria<input v-model="klasa['kat']" class="input" type="text">
                                 </div>
                             </div>
                         <div>
                             <div class="field">
-                                <label>Komisja</label>
                                 <div class="control">
+                                    Komisja:
                                     <div class="select">
                                         <select id="pierwszy" @change="onSelectChange($event)" v-model="komisja[0]['sedzia']">
                                             <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
@@ -35,6 +33,11 @@
                                             <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
                                         </select>
                                     </div>
+                                    <div class="select">
+                                        <select id="czwarty" @change="onSelectChange($event)" v-model="komisja[3]['sedzia']">
+                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +46,7 @@
             </div>
             <div>
                 <router-link to="/klasy">
-                    <button class="button is-link">POWRÓT DO KLAS</button>
+                    <button class="button is-link">POWRÓT</button>
                     <button v-on:click="handleSubmit" class="button is-link">EDYTUJ</button>
                     <button v-on:click="handleDelete" class="button is-link">USUŃ</button>
                 </router-link>
@@ -60,9 +63,35 @@
         data: function () {
             return {
                 id: this.$route.params.id,
-                klasa: null,
+                klasa: {
+                    "id": this.$route.params.id,
+                    "numer": "",
+                    "kat": "",
+                    "komisja": [
+                    {
+                        id: Number,
+                        sedzia: String
+                    },
+                    {
+                        id: Number,
+                        sedzia: String
+                    },
+                    {
+                        id: Number,
+                        sedzia: String
+                    },
+                    {
+                        id: Number,
+                        sedzia: String
+                    }
+                    ]
+                },
                 sedziowie: null,
                 komisja: [
+                    {
+                        id: Number,
+                        sedzia: String
+                    },
                     {
                         id: Number,
                         sedzia: String
@@ -80,9 +109,7 @@
         },
         methods: {
             handleSubmit () {
-                if (this.komisja[0]["id"] === this.komisja[1]["id"] || this.komisja[0]["id"] === this.komisja[2]["id"] || this.komisja[1]["id"] === this.komisja[2]["id"]) {
-                    document.getElementById("error-label").style.display = "block";
-                }
+                
                 this.klasa["komisja"][0] = this.komisja[0]["id"];
                 this.klasa["komisja"][1] = this.komisja[1]["id"];
                 this.klasa["komisja"][2] = this.komisja[2]["id"];
@@ -149,6 +176,8 @@
                     wyb = 1;
                 } else if (event.srcElement.id === "trzeci") {
                     wyb = 2;
+                } else if (event.srcElement.id === "czwarty") {
+                    wyb = 2;
                 }
 
                 sedziowie.forEach(function (sedzia) {
@@ -177,56 +206,10 @@
     };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: #42b983;
 }
-.judge-table {
-  margin-left: auto;
-  margin-right: auto;
-}
-.kon-details,
-.submit-button {
-  margin-left: 15vh;
-}
-.kon-specifics {
-  margin-left: 15vh;
-}
-.lower-label {
-  font-size: 0.9rem;
-}
-.lower-input,
-.lower-label {
-  margin-left: 5px;
-  margin-top: 5px;
-}
-.next-lower-label {
-  font-size: 0.85rem;
-}
-.next-lower-input,
-.next-lower-label {
-  margin-left: 10px;
-  margin-top: 5px;
-}
-.border {
-    margin-left: 100px;
-    margin-right: 100px;
-    padding: 15px;
-}
-.label-title {
-    margin-left: 140px;
-}
+
 </style>

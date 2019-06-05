@@ -3,7 +3,7 @@
         <h1>
             Klasy
         </h1>
-        <router-link to="/klasy/new"> dodaj klasę </router-link>
+        <router-link to="/klasa/new"> dodaj klasę </router-link>
         <table>
                 <tr>
                     <th>Numer</th>
@@ -72,7 +72,7 @@
                     klasa["sedziowie"] = [];
                     klasa["komisja"].forEach(function (komisja) {
                         sedziowie.forEach(function (sedzia) {
-                            if (komisja === sedzia["id"] && klasa["sedziowie"].length<3) {
+                            if (komisja === sedzia["id"] && klasa["sedziowie"].length<4) {
                                 klasa["sedziowie"].push(sedzia["sedzia"]);
                             }
                         });

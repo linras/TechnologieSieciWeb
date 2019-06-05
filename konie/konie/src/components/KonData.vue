@@ -13,7 +13,7 @@
                     <th>Nazwa</th>
                     <th>Kraj</th>
                     <th>Rocznik</th>
-                    <th>Masc</th>
+                    <th>Maść</th>
                     <th>Płeć</th>
                     <th></th>
                 </tr>
@@ -25,8 +25,8 @@
                     <td v-if="item['klasa'] == klasa">{{ item['masc'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
                     <td v-if="item['klasa'] == klasa">
-                        <router-link :to="{ name: 'kon', params: { id: item['id'] }}">Edytuj </router-link>|
-                        <router-link :to="{ name: 'konocena', params: { id: item['id'] }}">Noty</router-link>
+                        <router-link :to="{ name: 'kon', params: { id: item['id'] }}">Edytuj |</router-link>
+                        <router-link :to="{ name: 'konocena', params: { id: item['id'] }}">| Noty</router-link>
                     </td>
                 </tr>
         </table>
@@ -68,37 +68,10 @@
     };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+
 a {
   color: #42b983;
 }
-.horse-table {
-  margin-left: auto;
-  margin-right: auto;
-}
 
-table thead tr th {
-  color: white;
-  font-size: 18px;
-}
-table tfoot tr th {
-  color: white;
-  font-size: 18px;
-}
-table tbody tr td {
-  color: white;
-  font-size: 16px;
-}
 </style>

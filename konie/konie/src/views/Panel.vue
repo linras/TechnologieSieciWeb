@@ -1,6 +1,6 @@
 <template>
     <div class="panel">
-        <PanelCrud/>
+        <PanelData/>
     </div>
 </template>
 
@@ -11,20 +11,16 @@
     export default {
         name: "panel",
         components: {
-            PanelCrud
+            PanelData
         },
         data: function () {
             return {
-                theComponent: "KonData",
-                somethingWeWantToPass: {
-                    test: "xd"
-                }
+                theComponent: "KonData"
             };
         },
         methods: {
             handleSwitchComponent (kon) {
                 this.theComponent = "KonDetails";
-                this.somethingWeWantToPass["kon"] = kon;
                 console.log(kon);
             }
         }
