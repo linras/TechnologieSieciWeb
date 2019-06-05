@@ -26,14 +26,14 @@
                     <td v-if="item['klasa'] == klasa">{{ item['rocznik'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['masc'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
-                    <td @load="aktualizuj($item)" v-if="item['klasa'] == klasa">
-                        Typ: {{ typsum }}
+                    <td @load="aktualizuj(item)" v-if="item['klasa'] == klasa">
+                        Typ: {{ item['wynik']['noty'][1]['typ']+ item['wynik']['noty'][2]['typ']}}
                         <!-- {{ item['wynik'] }} -->
                     <!-- <td>{{ typsum }}</td> -->
-                        Głowa: {{ glowasum }}
-                        Kłoda: {{ klodasum }}
-                        Nogi: {{ nogisum }}
-                        Ruch: {{ ruchsum }}
+                        Głowa: {{ item['wynik']['noty'][1]['glowa'] }}
+                        Kłoda: {{ item['wynik']['noty'][1]['kloda'] }}
+                        Nogi: {{ item['wynik']['noty'][1]['nogi'] }}
+                        Ruch: {{ item['wynik']['noty'][1]['ruch']}}
                     </td>
                 </tr>
         </table>
@@ -51,12 +51,12 @@
                 component: "PanelData",
                 kon: null,
                 klasa: 1,
-                glowasum: Number,
-                klodasum: Number,
-                nogisum: Number,
-                ruchsum: Number,
-                typsum: Number,
-                wyniksum: Number
+                glowasum: 0,
+                klodasum: 0,
+                nogisum: 0,
+                ruchsum: 0,
+                typsum: 0,
+                wyniksum: 0
             };
         },
         methods: {
