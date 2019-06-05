@@ -1,55 +1,50 @@
 <template>
     <div v-if="klasa !== null">
-        <div class="field is-grouped">
-            <div class="control submit-button">
-                <button v-on:click="handleSubmit" class="button is-link">Submit</button>
-            </div>
-        </div>
-        <div v-if="klasa !== null" class="columns is-multiline is-12">
+        <div v-if="klasa !== null">
             <div class="column">
                 <div class="border">
-                    <div v-if="klasa !== null" class="columns is-multiline is-12">
-                        <div class="column kon-details is-one-third">
+                    <div v-if="klasa !== null">
                             <div class="field">
-                                <label class="label has-text-left">Numer</label>
+                                <label>Numer</label>
                                 <div class="control">
                                     <input v-model="klasa['numer']" class="input" type="text">
                                 </div>
                             </div>
-                        </div>
-                        <div class="column kon-details is-one-third">
                             <div class="field">
                                 <label class="label has-text-left">Kategoria</label>
                                 <div class="control">
                                     <input v-model="klasa['kat']" class="input" type="text">
                                 </div>
                             </div>
-                        </div>
-                        <div class="column kon-details is-two-third">
+                        <div>
                             <div class="field">
-                                <label class="label has-text-left">Komisja</label>
+                                <label>Komisja</label>
                                 <div class="control">
                                     <div class="select">
-                                        <select id="sedzia-first" @change="onSelectChange($event)" v-model="komisja[0]['sedzia']">
+                                        <select id="pierwszy" @change="onSelectChange($event)" v-model="komisja[0]['sedzia']">
                                             <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
                                         </select>
                                     </div>
                                     <div class="select">
-                                        <select id="sedzia-second" @change="onSelectChange($event)" v-model="komisja[1]['sedzia']">
+                                        <select id="drugi" @change="onSelectChange($event)" v-model="komisja[1]['sedzia']">
                                             <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
                                         </select>
                                     </div>
                                     <div class="select">
-                                        <select id="sedzia-third" @change="onSelectChange($event)" v-model="komisja[2]['sedzia']">
+                                        <select id="trzeci" @change="onSelectChange($event)" v-model="komisja[2]['sedzia']">
                                             <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <label id="error-label" class="label has-text-left has-text-danger" style="display: none;">Nie może byc dwóch takich samych sędziów w komisji!</label>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <router-link to="/klasy">
+                    <button v-on:click="handleSubmit" class="button is-link">OK</button>
+                </router-link>
             </div>
         </div>
 
@@ -134,11 +129,11 @@
                 let sedziowie = this.sedziowie;
                 let komisja = this.komisja;
                 let choice;
-                if (event.srcElement.id === "sedzia-first") {
+                if (event.srcElement.id === "pierwszy") {
                     choice = 0;
-                } else if (event.srcElement.id === "sedzia-second") {
+                } else if (event.srcElement.id === "drugi") {
                     choice = 1;
-                } else if (event.srcElement.id === "sedzia-third") {
+                } else if (event.srcElement.id === "trzeci") {
                     choice = 2;
                 }
 
@@ -189,9 +184,6 @@ a {
   margin-left: auto;
   margin-right: auto;
 }
-label {
-    color: white;
-}
 .kon-details,
 .submit-button {
   margin-left: 15vh;
@@ -216,12 +208,9 @@ label {
   margin-top: 5px;
 }
 .border {
-    border: 1px solid black;
     margin-left: 100px;
     margin-right: 100px;
     padding: 15px;
-    background-color: #23272A;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .label-title {
     margin-left: 140px;
