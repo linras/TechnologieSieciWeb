@@ -115,4 +115,8 @@ table tbody tr td {
   color: white;
   font-size: 16px;
 }
+
+table {
+    margin: auto;
+}
 </style>

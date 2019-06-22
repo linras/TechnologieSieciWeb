@@ -74,4 +74,8 @@ a {
   color: #42b983;
 }
 
+table {
+    margin: auto;
+}
+
 </style>
