@@ -1,5 +1,6 @@
 <template>
-    <div v-if="kon !== null && klasa !== null && sedziowieKlasy.length > 0" >
+    <!--<div v-if="kon !== null && klasa !== null && sedziowieKlasy.length > 0" >-->
+    <div >
         <table >
             
                 <tr>
@@ -10,8 +11,6 @@
                     <th>Ruch</th>
                     <th>Sędziowie</th>
                 </tr>
-            
-                
             
                 <tr v-for="(item, index) in kon['wynik']['noty']" v-bind:key="item['$loki']">
                     <td>
@@ -60,11 +59,12 @@
                 id: this.$route.params.id,
                 kon: {},
                 klasa: {},
-                klasy: this.$store.getters.getKlasy,
-                konie: this.$store.getters.getKonie,
-                sedziowie: this.$store.getters.getSedziowie,
+                klasy: {},
+                konie: {},
+                sedziowie: {},
                 check: 0,
                 sedziowieKlasy: [],
+
                 glowasum: Number,
                 klodasum: Number,
                 nogisum: Number,
@@ -92,17 +92,19 @@
                 this.klasa.getSedziowie();
                 this.aktualizuj();
             },
-            getSedziowie () {
-                let klasa = this.klasa;
-                let sedziowieKlasy = this.sedziowieKlasy;
+            getSedziowie() {
+                //funkcja do wyswietlania sedziow obok not
+                this.sedziowieKlasy = [];//= this.sedziowieKlasy;
                 let sedziowie = this.sedziowie;
-                klasa["komisja"].forEach(function (komisja) {
-                    sedziowie.forEach(function (sedzia) {
-                        if (komisja === sedzia["id"]) {
-                            sedziowieKlasy.push(sedzia["sedzia"]);
+                //console.log(this.klasa);
+                this.klasa["komisja"].forEach((element) => {
+                    sedziowie.forEach((sedzia) => {
+                        if (element === sedzia["$loki"]) {
+                            this.sedziowieKlasy.push(sedzia["sedzia"]);
                         }
                     });
                 });
+                //console.log(this.sedziowieKlasy);
             },
             aktualizuj () {
                 let kon = this.kon;
@@ -121,10 +123,25 @@
                     wyniki.ruchsum = parseFloat(wyniki.ruchsum) + parseFloat(nota["ruch"]);
                 });
                 wyniki.wyniksum = wyniki.glowasum + wyniki.klodasum + wyniki.nogisum + wyniki.typsum + wyniki.ruchsum;
+                //tutaj zalacz do konia wyniki[suma, typsum, ruchsum, rozjemca?]
+
             }
         },
         created() {
-            this.getKlasy();
+            this.klasy = this.$store.getters.getKlasy;
+            this.konie = this.$store.getters.getKonie;
+            this.sedziowie = this.$store.getters.getSedziowie;
+            this.konie.forEach((element) => {
+                if (element["$loki"] == this.id)
+                    this.kon = element;
+            });
+            this.klasy.forEach((element) => {
+                if (element["numer"] == this.kon["klasa"])
+                    this.klasa = element;
+            });
+            this.getSedziowie();
+            this.aktualizuj();
+            //this.getKlasy();
         }
     };
 </script>

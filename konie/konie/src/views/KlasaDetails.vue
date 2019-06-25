@@ -15,12 +15,11 @@
                                 </div>
                             </div>
                         <div>
-                            <div class="field">
+                            <div class="field"> Komisja:
                                 <div v-for="sedzia in sedziowie">
                                     <input type="checkbox" :id="sedzia.sedzia" :value="sedzia.$loki" v-model="checkedSedzia">
                                     <label for="sedzia['$loki']">{{sedzia['sedzia']}}</label>
                                 </div>
-                                <span>Checked sedziowie: {{ checkedSedzia }}</span>
                                 <!--<div class="control">
                                     Komisja: <div v-for="item in klasa['sedziowie']"> {{item}} </div>
                                     <div class="select" @change="onSelectChange($event)">

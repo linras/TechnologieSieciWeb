@@ -199,6 +199,20 @@
                                 "kloda": 0,
                                 "nogi": 0,
                                 "ruch": 0
+                            },
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
+                            },
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
                             }
                         ]
                     }

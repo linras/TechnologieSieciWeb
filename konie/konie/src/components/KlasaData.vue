@@ -51,7 +51,7 @@
                     klasa["sedziowie"] = [];
                     klasa["komisja"].forEach(function (komisja) {
                         sedziowie.forEach(function (sedzia) {
-                            if (komisja === sedzia["$loki"] && klasa["sedziowie"].length < 4) {
+                            if (komisja === sedzia["$loki"] ) {
                                 klasa["sedziowie"].push(sedzia["sedzia"]);
                             }
                         });

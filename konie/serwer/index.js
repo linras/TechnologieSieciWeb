@@ -43,6 +43,7 @@ function fill() {
             if (element.klasa > ileklas)
                 ileklas = element.klasa;
         });
+        //zmieniam nr tak ze rosna kolejno w kazdej klasie od poczatku
         for (let i = 0; i <= ileklas; i++) {
             let numer = 1;
             data.forEach(element => {
@@ -52,13 +53,40 @@ function fill() {
                 }
             });
         }
-
+        //dodaje wyniki, ktore sa suma not
+        //wyniki[ glowasum: Number,
+        //        klodasum: Number,
+        //        nogisum: Number,
+        //        ruchsum: Number,
+        //        typsum: Number,
+        //        wyniksum: Number,
+        //        rozjemca: Number]
+        data.forEach(element => {
+            element["wyniki"] = {};
+            element["wyniki"]["glowasum"] = 0;
+            element["wyniki"]["klodasum"] = 0;
+            element["wyniki"]["nogisum"] = 0;
+            element["wyniki"]["ruchsum"] = 0;
+            element["wyniki"]["typsum"] = 0;
+            element["wyniki"]["wyniksum"] = 0;
+            element["wyniki"]["rozjemca"] = 0;
+            element["wynik"]["noty"].forEach((noty) => {
+                element["wyniki"]["glowasum"] += noty["glowa"];
+                element["wyniki"]["klodasum"] += noty["kloda"];
+                element["wyniki"]["nogisum"] += noty["nogi"];
+                element["wyniki"]["ruchsum"] += noty["ruch"];
+                element["wyniki"]["typsum"] += noty["typ"];
+                element["wyniki"]["wyniksum"] = element["wyniki"]["wyniksum"]+noty["glowa"] + noty["typ"] + noty["ruch"] + noty["nogi"] + noty["kloda"] + noty["glowa"];
+            });
+        }); 
         data.forEach(element => {
             delete element.id;
             konie.insert(element);
         });
     })
-    .catch(err=>console.log(`Błąd: ${err}`))
+    .catch(err => console.log(`Błąd: ${err}`))
+
+
 
     axios.get('http://localhost:3000/klasy')
     .then(resp => {
