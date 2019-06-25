@@ -38,10 +38,25 @@ function fill() {
     axios.get('http://localhost:3000/konie')
     .then(resp => {
         let data = resp.data;
-        data.forEach(element =>{
+        let ileklas = 0;
+        data.forEach(element => {
+            if (element.klasa > ileklas)
+                ileklas = element.klasa;
+        });
+        for (let i = 0; i <= ileklas; i++) {
+            let numer = 1;
+            data.forEach(element => {
+                if (element.klasa == i) {
+                    element.numer = numer;
+                    numer++;
+                }
+            });
+        }
+
+        data.forEach(element => {
             delete element.id;
             konie.insert(element);
-        })
+        });
     })
     .catch(err=>console.log(`Błąd: ${err}`))
 
@@ -214,16 +229,36 @@ app.delete('/sedziowie/:id', (req, res) => {
 });
 
 app.delete('/konie/:id', (req, res) => {
-    let konie = baza.getCollection('konie');
-
+    let collection = baza.getCollection('konie');
+    let klasa = 0;
     
-        let kon = konie.findOne({
+        let kon = collection.findOne({
             "$loki": req.params.id * 1
         });
+    klasa = kon["klasa"];
+    collection.remove(kon);
+    
+    let test = baza.getCollection('konie').find({});
+    let konie = [];
 
-        konie.remove(kon);
+    test.forEach((element) => {
+        if (element["klasa"] == klasa)
+            konie.push(element);
+    });
 
-        res.send("Deleted");
+    konie.sort(function (a, b) {
+        return a["numer"] - b["numer"];
+    });
+
+    let numer = 0;
+    konie.forEach((element) => {
+        numer++;
+        if (element["numer"] != numer) {
+            element["numer"] = numer;
+            collection.update(element);
+        }
+    });
+    res.send("Deleted");
 });
 
 app.delete('/klasy/:id', (req, res) => {
@@ -259,8 +294,29 @@ app.post('/sedziowie', (req, res) => {
 });
 
 app.post('/konie', (req, res) => {
-    let konie = baza.getCollection('konie');
-    konie.insert(req.body);
+    let collection = baza.getCollection('konie');
+    let test = baza.getCollection('konie').find({});
+    let klasa = req.body["klasa"];
+    let numer = 1;
+    let konie = [];
+
+    test.forEach((element) => {
+        if (element["klasa"] == klasa) {
+            konie.push(element);
+            numer++;
+        }
+    });
+    
+    req.body["numer"] = numer;
+
+    //konie.forEach((element) => {
+    //    if (element["numer"] == numer) {
+    //        numer++;
+    //        element["numer"] = numer;
+    //        collection.update(element);
+    //    }
+    //});
+    collection.insert(req.body);
     res.send("posted");
 });
 
@@ -291,8 +347,43 @@ app.put('/sedziowie', (req, res) => {
 });
 
 app.put('/konie', (req, res) => {
-    let konie = baza.getCollection('konie');
-    konie.update(req.body);
+    let collection = baza.getCollection('konie');
+    let test = baza.getCollection('konie').find({});
+    let klasa = req.body["klasa"];
+    let numer = req.body["numer"];
+    let konie = [];
+
+    test.forEach((element) => {
+        if (element["klasa"] == klasa)
+            konie.push(element);
+    });
+
+    konie.forEach((element) => {
+        if (element["numer"] == numer) {
+            numer++;
+            element["numer"]=numer;
+            collection.update(element);
+        }
+    });
+
+    //czasami cos sie wali, dodatkowy sort daje rade
+    konie.push(req.body);
+    konie.sort(function (a, b) {
+        return a["numer"] - b["numer"];
+    });
+
+    numer = 0;
+    konie.forEach((element) => {
+        numer++;
+        if (element["numer"] != numer) {
+            element["numer"] = numer;
+            collection.update(element);
+        }
+    });
+
+    //sort i sprawdzenie wszystkich klas?
+
+    collection.update(req.body);
     res.send("updated");
 });
 

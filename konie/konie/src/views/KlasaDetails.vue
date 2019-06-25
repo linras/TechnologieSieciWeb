@@ -16,29 +16,19 @@
                             </div>
                         <div>
                             <div class="field">
-                                <div class="control">
-                                    Komisja:
-                                    <div class="select">
-                                        <select id="pierwszy" @change="onSelectChange($event)" v-model="komisja[0]['sedzia']">
-                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="select">
-                                        <select id="drugi" @change="onSelectChange($event)" v-model="komisja[1]['sedzia']">
-                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="select">
-                                        <select id="trzeci" @change="onSelectChange($event)" v-model="komisja[2]['sedzia']">
-                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="select">
-                                        <select id="czwarty" @change="onSelectChange($event)" v-model="komisja[3]['sedzia']">
-                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['id']">{{ sedzia['sedzia'] }}</option>
-                                        </select>
-                                    </div>
+                                <div v-for="sedzia in sedziowie">
+                                    <input type="checkbox" :id="sedzia.sedzia" :value="sedzia.$loki" v-model="checkedSedzia">
+                                    <label for="sedzia['$loki']">{{sedzia['sedzia']}}</label>
                                 </div>
+                                <span>Checked sedziowie: {{ checkedSedzia }}</span>
+                                <!--<div class="control">
+                                    Komisja: <div v-for="item in klasa['sedziowie']"> {{item}} </div>
+                                    <div class="select" @change="onSelectChange($event)">
+                                        <select  v-for="item in klasa['komisja']" id="item[$loki]"  v-model="item['sedzia']">
+                                            <option v-for="sedzia in sedziowie" v-bind:key="sedzia['$loki']">{{ sedzia['sedzia'] }}</option>
+                                        </select>
+                                    </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -66,95 +56,23 @@
                 id: this.$route.params.id,
                 nowy: true,
                 sedziowie: {},
+                checkedSedzia: [],
                 klasy: {},
                 klasa: {
-                    //"id": this.$route.params.id,
+                    "id": this.id,
                     "numer": "",
                     "kat": "",
-                    "komisja": [
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    }
-                    ]
+                    "komisja": []
                 },
-                komisja: [
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    },
-                    {
-                        id: Number,
-                        sedzia: String
-                    }
-                ]
+                komisja: []
             };
         },
         methods: {
-            handleSubmit () {
-                
-                this.klasa["komisja"][0] = this.komisja[0]["id"];
-                this.klasa["komisja"][1] = this.komisja[1]["id"];
-                this.klasa["komisja"][2] = this.komisja[2]["id"];
-
-                this.$http
-                    .put(
-                        "http://localhost:3000/klasy/" + this.id, this.klasa)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            },
-            handleDelete () {
-                this.$http
-                    .delete(
-                        "http://localhost:3000/klasy/" + this.id, this.klasa)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            },
-            fetchSedziowie () {
-                this.$http
-                    .get("http://localhost:3000/sedziowie")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.sedziowie = data;
-                        this.getKomisja();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             Dodaj() {
+                this.klasa["komisja"] = [];
+                this.checkedSedzia.forEach((element, index) => {
+                    this.klasa["komisja"][index] = element;
+                });
                 console.log(this.klasa);
                 this.$store.dispatch("add", {
                     path: "klasy",
@@ -165,6 +83,10 @@
             },
 
             Edytuj() {
+                this.klasa["komisja"] = [];
+                this.checkedSedzia.forEach((element, index) => {
+                    this.klasa["komisja"][index] = element;
+                });
                 console.log(this.klasa);
                 this.$store.dispatch("edit", {
                     path: "klasy",
@@ -181,55 +103,27 @@
                 });
                 this.$router.push("/admin/klasy");
             },
-            getSedzia() {
-                let sedziowie = this.sedziowie;
-                this.klasy.forEach(function (klasa) {
-                    klasa["sedziowie"] = [];
-                    klasa["komisja"].forEach(function (komisja) {
-                        sedziowie.forEach(function (sedzia) {
-                            if (komisja === sedzia["$loki"] && klasa["sedziowie"].length < 4) {
-                                klasa["sedziowie"].push(sedzia["sedzia"]);
-                            }
-                        });
-                    });
-                });
-            },
-            getKomisja () {
-                let klasa = this.klasa;
-                let komisja = this.komisja;
-                let sedziowie = this.sedziowie;
-                let count = 0;
-                klasa["komisja"].forEach(function (kom) {
-                    komisja[count]["id"] = kom;
-                    sedziowie.forEach(function (sedzia) {
-                        if (komisja[count]["id"] === sedzia["id"]) {
-                            komisja[count]["sedzia"] = sedzia["sedzia"];
-                        }
-                    });
-                    count++;
-                });
-            },
-            onSelectChange (event) {
-                let sedziowie = this.sedziowie;
-                let komisja = this.komisja;
-                let wyb;
-                if (event.srcElement.id === "pierwszy") {
-                    wyb = 0;
-                } else if (event.srcElement.id === "drugi") {
-                    wyb = 1;
-                } else if (event.srcElement.id === "trzeci") {
-                    wyb = 2;
-                } else if (event.srcElement.id === "czwarty") {
-                    wyb = 2;
-                }
+            //onSelectChange (event) {
+            //    let sedziowie = this.sedziowie;
+            //    let komisja = this.komisja;
+            //    let wyb;
+            //    if (event.srcElement.id === "pierwszy") {
+            //        wyb = 0;
+            //    } else if (event.srcElement.id === "drugi") {
+            //        wyb = 1;
+            //    } else if (event.srcElement.id === "trzeci") {
+            //        wyb = 2;
+            //    } else if (event.srcElement.id === "czwarty") {
+            //        wyb = 2;
+            //    }
 
-                sedziowie.forEach(function (sedzia) {
-                    if (komisja[wyb]["sedzia"] === sedzia["sedzia"]) {
-                        komisja[wyb]["id"] = sedzia["id"];
-                    }
-                });
-                //document.getElementById("error-label").style.display = "none";
-            }
+            //    sedziowie.forEach(function (sedzia) {
+            //        if (komisja[wyb]["sedzia"] === sedzia["sedzia"]) {
+            //            komisja[wyb]["id"] = sedzia["$loki"];
+            //        }
+            //    });
+            //    document.getElementById("error-label");//.style.display = "none";
+            //}
         },
         created() {
             this.sedziowie = this.$store.getters.getSedziowie;
@@ -237,11 +131,14 @@
             this.klasy.forEach((element) => {
                 if (element["$loki"] == this.id)
                     this.klasa = element;
-                //fetchsedziowie
             });
+            //nowa klasa nie ma nr
             if (this.klasa["numer"] != '')
                 this.nowy = false;
-            this.getSedzia();
+            this.klasa["komisja"].forEach((element, index) => {
+                this.komisja[index] = element;
+                this.checkedSedzia[index] = element;
+            });
         },
         mounted () {
         }

@@ -58,9 +58,12 @@
                     if (element["klasa"] == this.klasa)
                         this.konie.push(element);
                 });
-                this.konie.forEach((element, index) => {
-                    element.numer = index + 1;
+                this.konie.sort(function (a, b) {
+                    return a["numer"] - b["numer"];
                 });
+                //this.konie.forEach((element, index) => {
+                //    element.numer = index + 1;
+                //});
             //show: function () {
             //    this.konie = this.$store.getters.getKonie;
             }
