@@ -1,34 +1,35 @@
 <template>
     <div>
         <h1>
-            <a v-on:click="klasa > 1 ? klasa -= 1 : klasa">poprzednia</a>
+            <a v-on:click="klasa > 1 ? klasa -= 1 : klasa; show();">poprzednia</a>
             Klasa {{ klasa }}
-            <a v-on:click="klasa += 1">nastepna</a>
+            <a v-on:click="klasa += 1; show();">nastepna</a>
         </h1>
-        
-        <router-link to="/konie/new"> dodaj konia </router-link>
+
+
+        <router-link :to="{ name: 'konieEdit', params: { id: lastIndex }}"> dodaj konia </router-link>
         <table>
-                <tr>
-                    <th>Nr</th>
-                    <th>Nazwa</th>
-                    <th>Kraj</th>
-                    <th>Rocznik</th>
-                    <th>Maść</th>
-                    <th>Płeć</th>
-                    <th></th>
-                </tr>
-                <tr v-for="item in kon" v-bind:key="item['id']">
-                    <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
-                    <td v-if="item['klasa'] == klasa">{{ item['nazwa'] }}</td>
-                    <td v-if="item['klasa'] == klasa">{{ item['kraj'] }}</td>
-                    <td v-if="item['klasa'] == klasa">{{ item['rocznik'] }}</td>
-                    <td v-if="item['klasa'] == klasa">{{ item['masc'] }}</td>
-                    <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
-                    <td v-if="item['klasa'] == klasa">
-                        <router-link :to="{ name: 'kon', params: { id: item['id'] }}">Edytuj |</router-link>
-                        <router-link :to="{ name: 'konocena', params: { id: item['id'] }}">| Noty</router-link>
-                    </td>
-                </tr>
+            <tr>
+                <th>Nr</th>
+                <th>Nazwa</th>
+                <th>Kraj</th>
+                <th>Rocznik</th>
+                <th>Maść</th>
+                <th>Płeć</th>
+                <th></th>
+            </tr>
+            <tr v-for="item in konie" v-bind:key="item['$loki']">
+                <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
+                <td v-if="item['klasa'] == klasa">{{ item['nazwa'] }}</td>
+                <td v-if="item['klasa'] == klasa">{{ item['kraj'] }}</td>
+                <td v-if="item['klasa'] == klasa">{{ item['rocznik'] }}</td>
+                <td v-if="item['klasa'] == klasa">{{ item['masc'] }}</td>
+                <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
+                <td v-if="item['klasa'] == klasa">
+                    <router-link :to="{ name: 'kon', params: { id: item['$loki'] }}">Edytuj |</router-link>
+                    <router-link :to="{ name: 'konocena', params: { id: item['$loki'] }}">| Noty</router-link>
+                </td>
+            </tr>
         </table>
     </div>
 </template>
@@ -42,29 +43,50 @@
         data: function () {
             return {
                 component: "KonData",
-                kon: null,
+                lastIndex: 'new',
+                klasy: {},
+                konie: [],
                 klasa: 1
             };
         },
         methods: {
-            fetchData: function () {
-                this.$http
-                    .get("http://localhost:3000/konie")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.kon = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            show: function () {
+                this.klasy = this.$store.getters.getKlasy;
+                let test = this.$store.getters.getKonie;
+                this.konie = [];
+                test.forEach((element) => {
+                    if (element["klasa"] == this.klasa)
+                        this.konie.push(element);
+                });
+                this.konie.forEach((element, index) => {
+                    element.numer = index + 1;
+                });
+            //show: function () {
+            //    this.konie = this.$store.getters.getKonie;
             }
         },
-        mounted () {
-            this.fetchData();
+
+        computed: {
+            lista() {
+                this.klasy = this.$store.getters.getKlasy;
+                let test = this.$store.getters.getKonie;
+                this.konie = [];
+                test.forEach((element) => {
+                    if (element["klasa"] == this.klasa)
+                        this.konie.push(element);
+                });
+                this.konie.forEach((element, index) => {
+                    element.numer = index + 1;
+                });
+            }
         },
-        component: {}
+
+        created() {
+            this.show();
+        },
+        mounted() {
+            this.show();
+        }
     };
 </script>
 

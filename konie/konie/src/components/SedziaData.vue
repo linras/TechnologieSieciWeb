@@ -3,20 +3,20 @@
         <h1 >
             Sędziowie
         </h1>
-         <router-link :to="{ name: 'sedzia', params: { id: lastIndex }}"> dodaj sedziego </router-link>
+         <router-link :to="{ name: 'sedziowieEdit', params: { id: lastIndex }}"> dodaj sedziego </router-link>
         <table >
                 <tr>
                     <th>Numer</th>
                     <th>Sedzia</th>
                     <th>Kraj</th>
-                    <th>Szczegóły</th>
+                    <th></th>
                 </tr>
-                <tr v-for="item in sedzia" v-bind:key="item['id']">
-                    <td>{{ item['id'] }}</td>
+                <tr v-for="item in lista" v-bind:key="item['$loki']">
+                    <td>{{ item['$loki'] }}</td>
                     <td>{{ item['sedzia'] }}</td>
                     <td>{{ item['kraj'] }}</td>
                     <td>
-                        <router-link :to="{ name: 'sedzia', params: { id: item['id'] }}">Edytuj</router-link>
+                        <router-link :to="{ name: 'sedzia', params: { id: item['$loki'] }}">Details</router-link>
                     </td>
                 </tr>
         </table>
@@ -31,27 +31,24 @@
         },
         data: function () {
             return {
-                sedzia: null,
+                sedziowie: {},
                 lastIndex: 'new'
             };
         },
         methods: {
-            fetchData: function () {
-                this.$http.get("http://localhost:3000/sedziowie")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.sedzia = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            show: function () {
+                this.sedziowie = this.$store.getters.getSedziowie;
             }
         },
 
-        mounted () {
-            this.fetchData();
+        computed: {
+            lista() {
+                return this.sedziowie;
+            }
+        },
+
+        created() {
+            this.show();
         }
     };
 </script>

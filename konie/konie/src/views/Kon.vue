@@ -12,18 +12,18 @@
         name: "Kon",
         components: {
             KonData
-        },
-        data: function () {
-            return {
-                theComponent: "KonData"
-            };
-        },
-        methods: {
-            handleSwitchComponent (kon) {
-                this.theComponent = "KonDetails";
-                console.log(kon);
-            }
         }
+        //data: function () {
+        //    return {
+        //        theComponent: "KonData"
+        //    };
+        //},
+        //methods: {
+        //    handleSwitchComponent (kon) {
+        //        this.theComponent = "KonDetails";
+        //        console.log(kon);
+        //    }
+        //}
     };
 
 </script>

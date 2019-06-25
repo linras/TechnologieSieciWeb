@@ -10,6 +10,27 @@
   </div>
 </template>
 
+<!--<script>
+    import store from "./store";
+    export default {
+        name: "App",
+
+        data: function () {
+            return {};
+        },
+        
+        methods: {
+            dodaj: () => {
+                store.dispatch("getData");
+            }
+        },
+
+        created () {
+            this.dodaj();
+        }
+    };
+</script>-->
+
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

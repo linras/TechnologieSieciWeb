@@ -121,10 +121,11 @@
         </div>
     <div>
         <router-link to="/konie">
-                    <button class="button is-link">POWRÓT DO KONI</button>
-                    <button v-on:click="handleSubmit" class="button is-link">EDYTUJ</button>
-                    <button v-on:click="handleDelete" class="button is-link">USUŃ</button>
-            </router-link>
+            <button class="button is-link">Powrót</button>
+            <button v-if="!this.nowy" v-on:click="Edytuj">Edytuj</button>
+            <button v-if="!this.nowy" v-on:click="Usun">Usuń</button>
+            <button v-if="this.nowy" v-on:click="Dodaj">Dodaj</button>
+        </router-link>
     </div>
     </div>
 </template>
@@ -136,47 +137,115 @@
         data: function () {
             return {
                 id: this.$route.params.id,
-                kon: null,
-                loaded: Boolean
+                konie: null,
+                nowy:true,
+                kon: {
+                    "id": this.$route.params.id,
+                    "numer": "",
+                    "klasa": "",
+                    "nazwa": "",
+                    "kraj": "",
+                    "rocznik": "",
+                    "masc": "",
+                    "plec": "",
+                    "hodowca": {
+                        "nazwa": "",
+                        "kraj": ""
+                    },
+                    "wlasciciel": {
+                        "nazwa": "",
+                        "kraj": ""
+                    },
+                    "rodowod": {
+                        "o": {
+                            "nazwa": "",
+                            "kraj": ""
+                        },
+                        "m": {
+                            "nazwa": "",
+                            "kraj": ""
+                        },
+                        "om": {
+                            "nazwa": "",
+                            "kraj": ""
+                        }
+                    },
+                    "wynik": {
+                        "noty": [
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
+                            },
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
+                            },
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
+                            },
+                            {
+                                "typ": 0,
+                                "glowa": 0,
+                                "kloda": 0,
+                                "nogi": 0,
+                                "ruch": 0
+                            }
+                        ]
+                    }
+                }//kon?
             };
         },
         methods: {
-            handleSubmit () {
-                this.$http
-                    .put(
-                        "http://localhost:3000/konie/" + this.id, this.kon)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+            Dodaj() {
+                this.$store.dispatch("add", {
+                    path: "konie",
+                    ob: this.kon,
+                    table: "konie"
+                });
+                this.$router.push("/admin/konie");
             },
-            handleDelete () {
-                this.$http
-                    .delete(
-                        "http://localhost:3000/konie/" + this.id, this.kon)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+
+            Edytuj() {
+                this.$store.dispatch("edit", {
+                    path: "konie",
+                    ob: this.kon
+                });
+                this.$router.push("/admin/konie");
+            },
+
+            Usun() {
+                console.log(this.kon);
+                this.$store.dispatch("delete", {
+                    path: "konie",
+                    id: this.kon.$loki
+                });
+                this.$router.push("/admin/konie");
+            }
+        },
+        computed: {
+            lista() {
+
             }
         },
         created () {
-            this.$http.get("http://localhost:3000/konie/" + this.id)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.kon = data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            this.konie = this.$store.getters.getKonie;
+            this.konie.forEach((element) => {
+                if (element["$loki"] == this.id)
+                    this.kon = element;
+            });
+            if (this.kon["nazwa"] != '')
+                this.nowy = false;
+            console.log(this.kon);
         },
         mounted () {
             console.log(this.$http);

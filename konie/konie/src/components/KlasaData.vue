@@ -3,24 +3,25 @@
         <h1>
             Klasy
         </h1>
-        <router-link to="/klasa/new"> dodaj klasę </router-link>
+        <router-link :to="{ name: 'klasyEdit', params: { id: lastIndex }}"> dodaj klasę </router-link>
         <table>
-                <tr>
-                    <th>Numer</th>
-                    <th>Kategoria</th>
-                    <th>Komisja</th>
-                    <th></th>
-                </tr>
-                <tr v-for="item in klasy" v-bind:key="item['id']">
-                    <td>{{ item['numer'] }}</td>
-                    <td>{{ item['kat'] }}</td>
-                    <td>
-                        <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia"><td>{{ sedzia }} </td> </span>
-                    </td>
-                    <td>
-                        <router-link :to="{ name: 'klasa', params: { id: item['id'] }}">Edytuj</router-link>
-                    </td>
-                </tr>
+            <tr>
+                <th>Numer</th>
+                <th>Kategoria</th>
+                <th>Komisja</th>
+                <th></th>
+            </tr>
+            <tr v-for="item in klasy" v-bind:key="item['$loki']">
+                <td>{{ item['numer'] }}</td>
+                <td>{{ item['kat'] }}</td>
+                <td>
+                    <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia">
+                <td>{{ sedzia }} </td> </span>
+                </td>
+                <td>
+                    <router-link :to="{ name: 'klasa', params: { id: item['$loki'] }}">Edytuj</router-link>
+                </td>
+            </tr>
         </table>
     </div>
 </template>
@@ -34,45 +35,23 @@
         data: function () {
             return {
                 klasy: null,
+                lastIndex: 'new',
                 sedziowie: null
             };
         },
         methods: {
-            fetchSedziowie: function () {
-                this.$http
-                    .get("http://localhost:3000/sedziowie")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.sedziowie = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            show: function () {
+                this.sedziowie = this.$store.getters.getSedziowie;
+                this.klasy = this.$store.getters.getKlasy;
+                this.getSedzia();
             },
-            fetchKlasy: function () {
-                this.$http
-                    .get("http://localhost:3000/klasy")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.klasy = data;
-                        this.getSedzia();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-
-            getSedzia () {
+            getSedzia() {
                 let sedziowie = this.sedziowie;
                 this.klasy.forEach(function (klasa) {
                     klasa["sedziowie"] = [];
                     klasa["komisja"].forEach(function (komisja) {
                         sedziowie.forEach(function (sedzia) {
-                            if (komisja === sedzia["id"] && klasa["sedziowie"].length<4) {
+                            if (komisja === sedzia["$loki"] && klasa["sedziowie"].length < 4) {
                                 klasa["sedziowie"].push(sedzia["sedzia"]);
                             }
                         });
@@ -80,9 +59,15 @@
                 });
             }
         },
-        async mounted () {
-            this.fetchSedziowie();
-            this.fetchKlasy();
+
+        computed: {
+            lista() {
+                return this.sedziowie;
+            }
+        },
+
+        created() {
+            this.show();
         }
     };
 </script>

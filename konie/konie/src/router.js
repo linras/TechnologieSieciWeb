@@ -52,13 +52,40 @@ export default new Router({
       component: () => import("./views/SedziaDetails.vue")
   },
   {
+        path: "/admin/sedziowie/:id",
+        name: "sedziowieEdit",
+        //meta: {
+        //    layout: "Admin",
+        //    private: true
+        //},
+        component: () => import("./views/SedziaDetails.vue")
+  },
+  {
+        path: "/admin/konie/:id",
+        name: "konieEdit",
+        //meta: {
+        //    layout: "Admin",
+        //    private: true
+        //},
+        component: () => import("./views/KonDetails.vue")
+  },
+  {
+        path: "/admin/klasy/:id",
+        name: "klasyEdit",
+        //meta: {
+        //    layout: "Admin",
+        //    private: true
+        //},
+        component: () => import("./views/KlasaDetails.vue")
+  },
+  {
       path: "/klasa/:id",
       name: "klasa",
       component: () => import("./views/KlasaDetails.vue")
   },
   {
     path: "/klasy/new",
-    name: "klasa",
+    name: "klasaCreate",
     component: () => import("./views/KlasaCreate.vue")
 },
   {

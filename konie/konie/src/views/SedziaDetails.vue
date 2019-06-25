@@ -25,9 +25,9 @@
             
         <router-link to="/sedziowie">
                 <button>Powrót</button>
-                <button v-on:click="handleSubmit">Edytuj</button>
-                <button v-on:click="handleDelete">Usuń</button>
-                <button v-on:click="handleCreate">Dodaj</button>
+                <button v-if="!this.nowy" v-on:click="Edytuj">Edytuj</button>
+                <button v-if="!this.nowy" v-on:click="Usun">Usuń</button>
+                <button v-if="this.nowy" v-on:click="Dodaj">Dodaj</button>
         </router-link>
     </div>
     
@@ -40,70 +40,50 @@
         data: function () {
             return {
                 id: this.$route.params.id,
-                sedzia: {"id":this.$route.params.id, "sedzia": "", "kraj": ""},
-                sedziowie: null,
-                loaded: Boolean
+                sedzia: { "id": this.$route.params.id, "sedzia": "", "kraj": "" },
+                nowy: true,
+                sedziowie: null
             };
         },
         methods: {
-            handleSubmit () {
-                this.$http
-                    .put(
-                        "http://localhost:3000/sedziowie/" + this.id, this.sedzia)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+            Dodaj() {
+                console.log(this.sedzia);
+                this.$store.dispatch("add", {
+                    path: "sedziowie",
+                    ob: this.sedzia,
+                    table: "sedziowie"
+                });
+                this.$router.push("/admin/sedziowie");
             },
-            handleCreate () {
-                this.sedzia.id = this.sedziowie.lastIndex;
-                this.$http
-                    .post(
-                        "http://localhost:3000/sedziowie", this.sedzia)
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+
+            Edytuj() {
+                console.log(this.sedzia);
+                this.$store.dispatch("edit", {
+                    path: "sedziowie",
+                    ob: this.sedzia
+                });
+                this.$router.push("/admin/sedziowie");
             },
-            handleDelete () {
-                this.$http
-                    .delete(
-                        "http://localhost:3000/sedziowie/" + this.id, this.sedzia)
-                    .then(response => {
-                        console.log(response);
-                        this.ajaxRequest = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+
+            Usun() {
+                console.log(this.sedzia);
+                this.$store.dispatch("delete", {
+                    path: "sedziowie",
+                    id: this.sedzia.$loki
+                });
+                this.$router.push("/admin/sedziowie");
             }
         },
-        created () {
-            this.$http.get("http://localhost:3000/sedziowie/" + this.id)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.sedzia = data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-            this.$http.get("http://localhost:3000/sedziowie/")
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.sedziowie = data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+        created() {
+            this.sedziowie = this.$store.getters.getSedziowie;
+            this.sedziowie.forEach((element) => {
+                if (element["$loki"] == this.id)
+                    this.sedzia = element;
+            });
+            if (this.sedzia["sedzia"] != '')
+                this.nowy = false;
+            console.log(this.sedzia);
+
         },
         mounted () {
         }

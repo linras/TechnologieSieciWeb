@@ -13,7 +13,7 @@
             
                 
             
-                <tr v-for="(item, index) in kon['wynik']['noty']" v-bind:key="item['id']">
+                <tr v-for="(item, index) in kon['wynik']['noty']" v-bind:key="item['$loki']">
                     <td>
                         <input @change="aktualizuj($event)" :tabindex=1 v-model="item['typ']">
                     </td>
@@ -58,9 +58,11 @@
         data: function () {
             return {
                 id: this.$route.params.id,
-                kon: null,
-                klasa: null,
-                sedziowie: null,
+                kon: {},
+                klasa: {},
+                klasy: this.$store.getters.getKlasy,
+                konie: this.$store.getters.getKonie,
+                sedziowie: this.$store.getters.getSedziowie,
                 check: 0,
                 sedziowieKlasy: [],
                 glowasum: Number,
@@ -72,32 +74,23 @@
             };
         },
         methods: {
-            fetchKlasa () {
-                this.$http.get("http://localhost:3000/klasy/" + this.kon["klasa"])
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.klasa = data;
-                        this.fetchSedziowie();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            fetchSedziowie () {
-                this.$http.get("http://localhost:3000/sedziowie/")
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.sedziowie = data;
-                        this.getSedziowie();
-                        this.aktualizuj();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            getKlasy() {
+                //this.kon = this.$store.getters.getKon(this.id);
+                //this.klasy = this.$store.getters.getKlasy;
+                //this.konie = this.$store.getters.getKonie;
+                //this.sedziowie = this.$store.getters.getSedziowie;
+                this.konie.forEach((element) => {
+
+                });
+                console.log(this.konie);
+                console.log(this.klasy);
+                console.log(this.kon);
+                this.klasy.forEach((element) => {
+                    if (element["numer"] == this.kon["klasa"])
+                        this.klasa = element;
+                });
+                this.klasa.getSedziowie();
+                this.aktualizuj();
             },
             getSedziowie () {
                 let klasa = this.klasa;
@@ -130,20 +123,8 @@
                 wyniki.wyniksum = wyniki.glowasum + wyniki.klodasum + wyniki.nogisum + wyniki.typsum + wyniki.ruchsum;
             }
         },
-        created () {
-            this.$http.get("http://localhost:3000/konie/" + this.id)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.kon = data;
-                    this.fetchKlasa();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        mounted () {
+        created() {
+            this.getKlasy();
         }
     };
 </script>

@@ -46,9 +46,10 @@
             </div>
             <div>
                 <router-link to="/klasy">
-                    <button class="button is-link">POWRÓT</button>
-                    <button v-on:click="handleSubmit" class="button is-link">EDYTUJ</button>
-                    <button v-on:click="handleDelete" class="button is-link">USUŃ</button>
+                    <button>Powrót</button>
+                    <button v-if="!this.nowy" v-on:click="Edytuj">Edytuj</button>
+                    <button v-if="!this.nowy" v-on:click="Usun">Usuń</button>
+                    <button v-if="this.nowy" v-on:click="Dodaj">Dodaj</button>
                 </router-link>
             </div>
         </div>
@@ -63,8 +64,11 @@
         data: function () {
             return {
                 id: this.$route.params.id,
+                nowy: true,
+                sedziowie: {},
+                klasy: {},
                 klasa: {
-                    "id": this.$route.params.id,
+                    //"id": this.$route.params.id,
                     "numer": "",
                     "kat": "",
                     "komisja": [
@@ -86,7 +90,6 @@
                     }
                     ]
                 },
-                sedziowie: null,
                 komisja: [
                     {
                         id: Number,
@@ -151,6 +154,46 @@
                         console.log(error);
                     });
             },
+            Dodaj() {
+                console.log(this.klasa);
+                this.$store.dispatch("add", {
+                    path: "klasy",
+                    ob: this.klasa,
+                    table: "klasy"
+                });
+                this.$router.push("/admin/klasy");
+            },
+
+            Edytuj() {
+                console.log(this.klasa);
+                this.$store.dispatch("edit", {
+                    path: "klasy",
+                    ob: this.klasa
+                });
+                this.$router.push("/admin/klasy");
+            },
+
+            Usun() {
+                console.log(this.klasa);
+                this.$store.dispatch("delete", {
+                    path: "klasy",
+                    id: this.klasa.$loki
+                });
+                this.$router.push("/admin/klasy");
+            },
+            getSedzia() {
+                let sedziowie = this.sedziowie;
+                this.klasy.forEach(function (klasa) {
+                    klasa["sedziowie"] = [];
+                    klasa["komisja"].forEach(function (komisja) {
+                        sedziowie.forEach(function (sedzia) {
+                            if (komisja === sedzia["$loki"] && klasa["sedziowie"].length < 4) {
+                                klasa["sedziowie"].push(sedzia["sedzia"]);
+                            }
+                        });
+                    });
+                });
+            },
             getKomisja () {
                 let klasa = this.klasa;
                 let komisja = this.komisja;
@@ -185,21 +228,20 @@
                         komisja[wyb]["id"] = sedzia["id"];
                     }
                 });
-                document.getElementById("error-label").style.display = "none";
+                //document.getElementById("error-label").style.display = "none";
             }
         },
-        created () {
-            this.$http.get("http://localhost:3000/klasy/" + this.id)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.klasa = data;
-                    this.fetchSedziowie();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+        created() {
+            this.sedziowie = this.$store.getters.getSedziowie;
+            this.klasy = this.$store.getters.getKlasy;
+            this.klasy.forEach((element) => {
+                if (element["$loki"] == this.id)
+                    this.klasa = element;
+                //fetchsedziowie
+            });
+            if (this.klasa["numer"] != '')
+                this.nowy = false;
+            this.getSedzia();
         },
         mounted () {
         }

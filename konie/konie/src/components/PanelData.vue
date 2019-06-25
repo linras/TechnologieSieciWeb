@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1>
-            <a  v-on:click="klasa > 1 ? klasa -= 1 : klasa">poprzednia </a>
+            <a  v-on:click="klasa > 1 ? klasa -= 1 : klasa; show(); ">poprzednia </a>
             Klasa {{ klasa }}
-            <a v-on:click="klasa += 1">natępna</a>
+            <a v-on:click="klasa += 1; show();">natępna</a>
         </h1>
         <table>
                 <tr>
@@ -17,7 +17,7 @@
                     <th>Płeć</th>
                     <th>Oceny</th>
                 </tr>
-                <tr v-for="item in kon" v-bind:key="item['id']">
+                <tr v-for="(item, index) in konie" v-bind:key="item['$loki']">
                     <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['klasa'] }}</td>
@@ -48,8 +48,9 @@
         },
         data: function () {
             return {
+                klasy: {},
                 component: "PanelData",
-                kon: null,
+                konie: {},
                 klasa: 1,
                 glowasum: 0,
                 klodasum: 0,
@@ -60,20 +61,19 @@
             };
         },
         methods: {
-            fetchData: function () {
-                this.$http
-                    .get("http://localhost:3000/konie")
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.kon = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            show: function () {
+                this.klasy = this.$store.getters.getKlasy;
+                let test = this.$store.getters.getKonie;
+                this.konie = [];
+                test.forEach((element) => {
+                    if (element["klasa"] == this.klasa)
+                        this.konie.push(element);
+                });
+                this.konie.forEach((element, index) => {
+                        element.numer=index+1;
+                });
             },
-            aktualizuj (kon) {
+            aktualizuj(kon) {
                 //let kon = this.kon;
                 this.glowasum = 0;
                 this.klodasum = 0;
@@ -92,21 +92,15 @@
                 wyniki.wyniksum = wyniki.glowasum + wyniki.klodasum + wyniki.nogisum + wyniki.typsum + wyniki.ruchsum;
             }
         },
-        created () {
-            this.$http.get("http://localhost:3000/konie/" + this.id)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.kon = data;
-                    this.fetchKlasa();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+
+        computed: {
+            lista() {
+                return this.klasy;
+            }
         },
-        mounted () {
-            this.fetchData();
+
+        created() {
+            this.show();
         },
         component: {}
     };
