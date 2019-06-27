@@ -6,19 +6,20 @@
             <a v-on:click="klasa += 1; show();">natępna</a>
         </h1>
         <table>
-                <tr>
-                    <th>Miejsce</th>
-                    <th>Nr</th>
-                    <th>Klasa</th>
-                    <th>Nazwa</th>
-                    <th>Kraj</th>
-                    <th>Rocznik</th>
-                    <th>Maść</th>
-                    <th>Płeć</th>
-                    <th>Oceny</th>
-                </tr>
+            <tr>
+                <th>Miejsce</th>
+                <th>Nr</th>
+                <th>Klasa</th>
+                <th>Nazwa</th>
+                <th>Kraj</th>
+                <th>Rocznik</th>
+                <th>Maść</th>
+                <th>Płeć</th>
+                <th>Oceny</th>
+                <th>Suma pkt</th>
+            </tr>
                 <tr v-for="(item, index) in konie" v-bind:key="item['$loki']">
-                    <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
+                    <td v-if="item['klasa'] == klasa">{{ item['miejsce'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['numer'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['klasa'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['nazwa'] }}</td>
@@ -27,14 +28,13 @@
                     <td v-if="item['klasa'] == klasa">{{ item['masc'] }}</td>
                     <td v-if="item['klasa'] == klasa">{{ item['plec'] }}</td>
                     <td @load="aktualizuj(item)" v-if="item['klasa'] == klasa">
-                        Typ: {{ item['wynik']['noty'][1]['typ']+ item['wynik']['noty'][2]['typ']}}
-                        <!-- {{ item['wynik'] }} -->
-                    <!-- <td>{{ typsum }}</td> -->
-                        Głowa: {{ item['wynik']['noty'][1]['glowa'] }}
-                        Kłoda: {{ item['wynik']['noty'][1]['kloda'] }}
-                        Nogi: {{ item['wynik']['noty'][1]['nogi'] }}
-                        Ruch: {{ item['wynik']['noty'][1]['ruch']}}
+                        Typ: {{ item['wyniki']['typsum']}}
+                        Głowa: {{ item['wyniki']['glowasum'] }}
+                        Kłoda: {{ item['wyniki']['klodasum']}}
+                        Nogi: {{ item['wyniki']['nogisum'] }}
+                        Ruch: {{ item['wyniki']['ruchsum']}}
                     </td>
+                    <td>{{item['wyniki']['wyniksum']}}</td>
                 </tr>
         </table>
     </div>
@@ -69,9 +69,6 @@
                     if (element["klasa"] == this.klasa)
                         this.konie.push(element);
                 });
-                //this.konie.forEach((element, index) => {
-                //        element.numer=index+1;
-                //});
                 this.konie.sort(function (a, b) {
                     return a["numer"] - b["numer"];
                 });
@@ -93,16 +90,29 @@
                     wyniki.ruchsum = parseFloat(wyniki.ruchsum) + parseFloat(nota["ruch"]);
                 });
                 wyniki.wyniksum = wyniki.glowasum + wyniki.klodasum + wyniki.nogisum + wyniki.typsum + wyniki.ruchsum;
+                //TODO: posortowac wynikami, podac miejsca z uwzgl rozjemcy typu itp, posortowac nr?
             }
         },
 
         computed: {
             lista() {
-                return this.klasy;
+                this.klasy = this.$store.getters.getKlasy;
+                let test = this.$store.getters.getKonie;
+                this.konie = [];
+                test.forEach((element) => {
+                    if (element["klasa"] == this.klasa)
+                        this.konie.push(element);
+                });
+                //this.konie.forEach((element, index) => {
+                //    element.numer = index + 1;
+                //});
             }
         },
 
         created() {
+            this.show();
+        },
+        mounted() {
             this.show();
         },
         component: {}

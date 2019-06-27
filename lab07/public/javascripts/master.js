@@ -19,31 +19,6 @@ const kolory = document.getElementById('gra-kolory');
 const gra = document.getElementById('gra');
 const przebieg = document.getElementById('przebieg');
 
-//Walidacja 
-menuRozmiar.addEventListener('input', (e) => {
-    if (e.target.value <= 0 || e.target.value === '') {
-        uwagaRozmiar.textContent = 'Pole wymagane i wiekszę od 0';
-    } else {
-        uwagaRozmiar.textContent = '';
-    }
-    8
-});
-
-menuKolory.addEventListener('input', (e) => {
-    if (e.target.value <= 0 || e.target.value === '') {
-        uwagaKolory.textContent = 'Pole wymagane i wiekszę od 0';
-    } else {
-        uwagaKolory.textContent = '';
-    }
-});
-
-menuKroki.addEventListener('input', (e) => {
-    if (e.target.value < 0) {
-        uwagaKroki.textContent = 'Pole nie wymagane ,ale wiekszę od 0';
-    } else {
-        uwagaKroki.textContent = '';
-    }
-});
 
 
 

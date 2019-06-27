@@ -145,6 +145,24 @@ io.on('connection', function (socket) {
     });
 });
 
+io.sockets.on('connection', (socket) => {
+    socket.on('ocenEmit', () => {
+        io.emit('pointsEmit');
+    });
+});
+
+io.sockets.on('connection', (socket) => {
+    socket.on('klasaChanged', () => {
+        io.emit('klasaChanged');
+    });
+});
+
+io.sockets.on('connection', (socket) => {
+    socket.on('sedziaChanged', () => {
+        io.emit('sedziaChanged');
+    });
+});
+
 
 app.get('/sedziowie', (_req, res) => {
     let sedziowie = baza.getCollection('sedziowie');
@@ -250,6 +268,7 @@ app.delete('/sedziowie/:id', (req, res) => {
 
         sedziowie.remove(sedzia);
 
+        io.emit('sedziaChanged', 6);
         res.send("Deleted");
     } else {
         res.send("nie mozna usunac sedziego z komisji");
@@ -259,7 +278,6 @@ app.delete('/sedziowie/:id', (req, res) => {
 app.delete('/konie/:id', (req, res) => {
     let collection = baza.getCollection('konie');
     let klasa = 0;
-    
         let kon = collection.findOne({
             "$loki": req.params.id * 1
         });
@@ -286,6 +304,7 @@ app.delete('/konie/:id', (req, res) => {
             collection.update(element);
         }
     });
+    io.emit('ocenEmit', 6);   //emity
     res.send("Deleted");
 });
 
@@ -304,7 +323,7 @@ app.delete('/klasy/:id', (req, res) => {
 
     if (pusta) {
         klasy.remove(klasa);
-
+        io.emit('klasaChanged', 6);
         res.send("Deleted");
     } else {
         res.send("Klasa nie jest pusta");
@@ -317,7 +336,7 @@ app.post('/sedziowie', (req, res) => {
 
 
     sedziowie.insert(req.body);
-    // io.emit("hello", sedzia);
+    io.emit('sedziaChanged', 6);
     res.send("ok");
 });
 
@@ -345,6 +364,7 @@ app.post('/konie', (req, res) => {
     //    }
     //});
     collection.insert(req.body);
+    io.emit('ocenEmit', 6);   //emity
     res.send("posted");
 });
 
@@ -362,6 +382,7 @@ app.post('/klasy', (req, res) => {
 
     if (pusta) {
         collection.insert(req.body);
+        io.emit('klasaChanged', 6);
         res.send("posted");
     } else {
         res.send("Juz istnieje klasa o takim numerze");
@@ -371,6 +392,7 @@ app.post('/klasy', (req, res) => {
 app.put('/sedziowie', (req, res) => {
     let sedziowie = baza.getCollection('sedziowie');
     sedziowie.update(req.body);
+    io.emit('sedziaChanged', 6);
     res.send("updated");
 });
 
@@ -412,12 +434,14 @@ app.put('/konie', (req, res) => {
     //sort i sprawdzenie wszystkich klas?
 
     collection.update(req.body);
+    io.emit('ocenEmit', 6);   //emity
     res.send("updated");
 });
 
 app.put('/klasy', (req, res) => {
     let klasy = baza.getCollection('klasy');
     klasy.update(req.body);
+    io.emit('klasaChanged', 6);
     res.send("updated");
 });
 

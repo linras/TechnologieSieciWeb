@@ -12,7 +12,7 @@
                     <th>Sędziowie</th>
                 </tr>
             
-                <tr v-for="(item, index) in kon['wynik']['noty']" v-bind:key="item['$loki']">
+                <tr v-for="(item, index) in kon['wynik']['noty']"  v-if="(index < dlugosc)" v-bind:key="item['$loki']">
                     <td>
                         <input @change="aktualizuj($event)" :tabindex=1 v-model="item['typ']">
                     </td>
@@ -31,20 +31,20 @@
                     <td>{{ sedziowieKlasy[index] }}</td>
                 </tr>
                 <tr>
-                    <td>{{ typsum }}</td>
-                    <td>{{ glowasum }}</td>
-                    <td>{{ klodasum }}</td>
-                    <td>{{ nogisum }}</td>
-                    <td>{{ ruchsum }}</td>
+                    <td>{{ this.kon["wyniki"]["typsum"] }}</td>
+                    <td>{{ this.kon["wyniki"]["glowasum"] }}</td>
+                    <td>{{ this.kon["wyniki"]["klodasum"] }}</td>
+                    <td>{{ this.kon["wyniki"]["nogisum"] }}</td>
+                    <td>{{ this.kon["wyniki"]["ruchsum"] }}</td>
                 </tr>
                 <tr>
-                    <th class="suma">SUMA TYP: {{ typsum }}</th>
+                    <th class="suma">SUMA TYP: {{ this.kon["wyniki"]["typsum"] }}</th>
                     <th></th><th></th><th></th>
-                    <th class="suma">SUMA RUCH: {{ ruchsum }}</th>
+                                      <th class="suma">SUMA RUCH: {{ this.kon["wyniki"]["ruchsum"] }}</th>
                 </tr>
                 <tr>
                     <th></th><th></th>
-                    <th class="suma">SUMA WSZYSTKO: {{ wyniksum }}</th>
+                             <th class="suma">SUMA WSZYSTKO: {{ this.kon["wyniki"]["wyniksum"] }}</th>
                 </tr>
         </table>
     </div>
@@ -62,16 +62,14 @@
                 klasy: {},
                 konie: {},
                 sedziowie: {},
-                check: 0,
-                sedziowieKlasy: [],
-
-                glowasum: Number,
-                klodasum: Number,
-                nogisum: Number,
-                ruchsum: Number,
-                typsum: Number,
-                wyniksum: Number
+                dlugosc: 0, //na przypadkowe noty
+                sedziowieKlasy: []
             };
+        },
+        sockets: {
+            customEmit: function (data) {
+                console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+            }
         },
         methods: {
             getKlasy() {
@@ -101,29 +99,29 @@
                     sedziowie.forEach((sedzia) => {
                         if (element === sedzia["$loki"]) {
                             this.sedziowieKlasy.push(sedzia["sedzia"]);
+                            this.dlugosc++;
                         }
                     });
                 });
                 //console.log(this.sedziowieKlasy);
             },
-            aktualizuj () {
-                let kon = this.kon;
-                this.glowasum = 0;
-                this.klodasum = 0;
-                this.nogisum = 0;
-                this.typsum = 0;
-                this.ruchsum = 0;
-                this.wyniksum = 0;
-                let wyniki = this;
-                kon["wynik"]["noty"].forEach(function (nota) {
-                    wyniki.typsum = parseFloat(wyniki.typsum) + parseFloat(nota["typ"]);
-                    wyniki.glowasum = parseFloat(wyniki.glowasum) + parseFloat(nota["glowa"]);
-                    wyniki.klodasum = parseFloat(wyniki.klodasum) + parseFloat(nota["kloda"]);
-                    wyniki.nogisum = parseFloat(wyniki.nogisum) + parseFloat(nota["nogi"]);
-                    wyniki.ruchsum = parseFloat(wyniki.ruchsum) + parseFloat(nota["ruch"]);
+            aktualizuj() {
+                console.log("AKTUALIZACJA");
+                this.kon["wyniki"]["glowasum"] = 0;
+                this.kon["wyniki"]["klodasum"] = 0;
+                this.kon["wyniki"]["nogisum"] = 0;
+                this.kon["wyniki"]["typsum"] = 0;
+                this.kon["wyniki"]["ruchsum"] = 0;
+                this.kon["wyniki"]["wyniksum"] = 0;
+                this.kon["wynik"]["noty"].forEach((nota) => {
+                    this.kon["wyniki"]["typsum"] += parseFloat(nota["typ"]);
+                    this.kon["wyniki"]["glowasum"] += parseFloat(nota["glowa"]);
+                    this.kon["wyniki"]["klodasum"] += parseFloat(nota["kloda"]);
+                    this.kon["wyniki"]["nogisum"] += parseFloat(nota["nogi"]);
+                    this.kon["wyniki"]["ruchsum"] += parseFloat(nota["ruch"]);
                 });
-                wyniki.wyniksum = wyniki.glowasum + wyniki.klodasum + wyniki.nogisum + wyniki.typsum + wyniki.ruchsum;
-                //tutaj zalacz do konia wyniki[suma, typsum, ruchsum, rozjemca?]
+                this.kon["wyniki"]["wyniksum"] = this.kon["wyniki"]["typsum"] + this.kon["wyniki"]["glowasum"] + this.kon["wyniki"]["klodasum"] + this.kon["wyniki"]["nogisum"] + this.kon["wyniki"]["ruchsum"];
+                //TODO: commit konia? Socket?
 
             }
         },

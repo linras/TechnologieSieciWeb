@@ -1,6 +1,6 @@
 <template>
     <div class="klasy">
-        <KlasaData/>
+        <KlasaData v-if="render"/>
     </div>
 </template>
 
@@ -12,6 +12,21 @@
         name: "klasy",
         components: {
             KlasaData
+        },
+        data: function () {
+            return {
+                render: true
+            };
+        },
+        sockets: {
+            klasaChanged: function (data) {
+                setTimeout(() => {
+                    this.render = false;
+                }, 500);
+                setTimeout(() => {
+                    this.render = true;
+                }, 500);
+            }
         }
     };
 

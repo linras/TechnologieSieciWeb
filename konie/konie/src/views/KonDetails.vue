@@ -142,6 +142,7 @@
                 kon: {
                     "id": this.$route.params.id,
                     "numer": "",
+                    "miejsce": "",
                     "klasa": "",
                     "nazwa": "",
                     "kraj": "",
@@ -169,6 +170,15 @@
                             "nazwa": "",
                             "kraj": ""
                         }
+                    },
+                    "wyniki": {
+                        "glowasum": 0,
+                        "klodasum": 0,
+                        "nogisum": 0,
+                        "ruchsum": 0,
+                        "typsum": 0,
+                        "wyniksum": 0,
+                        "rozjemca": 0
                     },
                     "wynik": {
                         "noty": [
@@ -259,6 +269,7 @@
             });
             if (this.kon["nazwa"] != '')
                 this.nowy = false;
+            //this.kon["miejsce"] = this.kon["numer"];    //tymczasowo?
             console.log(this.kon);
         },
         mounted () {

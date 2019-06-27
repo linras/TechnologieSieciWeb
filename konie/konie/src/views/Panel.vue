@@ -1,6 +1,6 @@
 <template>
     <div class="panel">
-        <PanelData/>
+        <PanelData v-if="render"/>
     </div>
 </template>
 
@@ -12,6 +12,33 @@
         name: "panel",
         components: {
             PanelData
+        },
+        data: function () {
+            return {
+                render: true
+            };
+        },
+        sockets: {
+            connect: function () {
+                console.log('socket connected')
+            },
+            ocenEmit: function (data) {
+                console.log('this method was fired by ("ocenEmit", data)')
+                setTimeout(() => {
+                    this.render = false;
+                }, 500);
+                this.render = false;
+                setTimeout(() => {
+                    this.render=true;
+                }, 500);
+            },
+            pointsEmit: function (data) {
+                console.log('this method was fired by ("pointsEmit", data)')
+                this.render = false;
+                this.$nextTick(() => {
+                    this.render = true;
+                });
+            }
         }//,
         //data: function () {
         //    return {
