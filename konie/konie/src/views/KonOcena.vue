@@ -1,51 +1,54 @@
 <template>
     <!--<div v-if="kon !== null && klasa !== null && sedziowieKlasy.length > 0" >-->
     <div >
-        <table >
-            
-                <tr>
-                    <th>Typ</th>
-                    <th>Głowa</th>
-                    <th>Kłoda</th>
-                    <th>Nogi</th>
-                    <th>Ruch</th>
-                    <th>Sędziowie</th>
-                </tr>
-            
-                <tr v-for="(item, index) in kon['wynik']['noty']"  v-if="(index < dlugosc)" v-bind:key="item['$loki']">
-                    <td>
-                        <input @change="aktualizuj($event)" :tabindex=1 v-model="item['typ']">
-                    </td>
-                    <td>
-                        <input @change="aktualizuj($event)" :tabindex=2 v-model="item['glowa']">
-                    </td>
-                    <td>
-                        <input @change="aktualizuj($event)" :tabindex=3 v-model="item['kloda']">
-                    </td>
-                    <td>
-                        <input @change="aktualizuj($event)" :tabindex=4 v-model="item['nogi']">
-                    </td>
-                    <td>
-                        <input @change="aktualizuj($event)" :tabindex=5 v-model="item['ruch']">
-                    </td>
-                    <td>{{ sedziowieKlasy[index] }}</td>
-                </tr>
-                <tr>
-                    <td>{{ this.kon["wyniki"]["typsum"] }}</td>
-                    <td>{{ this.kon["wyniki"]["glowasum"] }}</td>
-                    <td>{{ this.kon["wyniki"]["klodasum"] }}</td>
-                    <td>{{ this.kon["wyniki"]["nogisum"] }}</td>
-                    <td>{{ this.kon["wyniki"]["ruchsum"] }}</td>
-                </tr>
-                <tr>
-                    <th class="suma">SUMA TYP: {{ this.kon["wyniki"]["typsum"] }}</th>
-                    <th></th><th></th><th></th>
-                                      <th class="suma">SUMA RUCH: {{ this.kon["wyniki"]["ruchsum"] }}</th>
-                </tr>
-                <tr>
-                    <th></th><th></th>
-                             <th class="suma">SUMA WSZYSTKO: {{ this.kon["wyniki"]["wyniksum"] }}</th>
-                </tr>
+        <table>
+
+            <tr>
+                <th>Typ</th>
+                <th>Głowa</th>
+                <th>Kłoda</th>
+                <th>Nogi</th>
+                <th>Ruch</th>
+                <th>Sędziowie</th>
+            </tr>
+
+            <tr v-for="(item, index) in kon['wynik']['noty']" v-if="(index < dlugosc)" v-bind:key="item['$loki']">
+                <td>
+                    <input @change="aktualizuj($event)" :tabindex=1 v-model="item['typ']">
+                </td>
+                <td>
+                    <input @change="aktualizuj($event)" :tabindex=2 v-model="item['glowa']">
+                </td>
+                <td>
+                    <input @change="aktualizuj($event)" :tabindex=3 v-model="item['kloda']">
+                </td>
+                <td>
+                    <input @change="aktualizuj($event)" :tabindex=4 v-model="item['nogi']">
+                </td>
+                <td>
+                    <input @change="aktualizuj($event)" :tabindex=5 v-model="item['ruch']">
+                </td>
+                <td>{{ sedziowieKlasy[index] }}</td>
+            </tr>
+            <tr>
+                <td>{{ this.kon["wyniki"]["typsum"] }}</td>
+                <td>{{ this.kon["wyniki"]["glowasum"] }}</td>
+                <td>{{ this.kon["wyniki"]["klodasum"] }}</td>
+                <td>{{ this.kon["wyniki"]["nogisum"] }}</td>
+                <td>{{ this.kon["wyniki"]["ruchsum"] }}</td>
+            </tr>
+            <tr>
+                <th class="suma">SUMA TYP: {{ this.kon["wyniki"]["typsum"] }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th class="suma">SUMA RUCH: {{ this.kon["wyniki"]["ruchsum"] }}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th class="suma">SUMA WSZYSTKO: {{ this.kon["wyniki"]["wyniksum"] }}</th>
+            </tr>
         </table>
     </div>
 </template>
@@ -122,7 +125,11 @@
                 });
                 this.kon["wyniki"]["wyniksum"] = this.kon["wyniki"]["typsum"] + this.kon["wyniki"]["glowasum"] + this.kon["wyniki"]["klodasum"] + this.kon["wyniki"]["nogisum"] + this.kon["wyniki"]["ruchsum"];
                 //TODO: commit konia? Socket?
-
+                this.$store.dispatch("edit", {
+                    path: "konie",
+                    ob: this.kon,
+                    table: "konie"
+                });
             }
         },
         created() {

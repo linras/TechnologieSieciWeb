@@ -16,7 +16,7 @@
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    Klasa <input v-model="kon['klasa']" class="input" type="text">
+                                    Klasa <input v-model="kon['klasa']" class="input" type="number">
                                 </div>
                             </div>
                             <div class="field">
@@ -143,7 +143,7 @@
                     "id": this.$route.params.id,
                     "numer": "",
                     "miejsce": "",
-                    "klasa": "",
+                    "klasa": 1,
                     "nazwa": "",
                     "kraj": "",
                     "rocznik": "",

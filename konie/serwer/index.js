@@ -79,15 +79,17 @@ function fill() {
                 element["wyniki"]["wyniksum"] = element["wyniki"]["wyniksum"]+noty["glowa"] + noty["typ"] + noty["ruch"] + noty["nogi"] + noty["kloda"] + noty["glowa"];
             });
         }); 
+        //sort i wtedy uzupelnic miejsca
         data.forEach(element => {
             delete element.id;
             konie.insert(element);
         });
+        setTimeout(() => {
+            updateKonie();
+        }, 500);
     })
     .catch(err => console.log(`Błąd: ${err}`))
-
-
-
+    
     axios.get('http://localhost:3000/klasy')
     .then(resp => {
         let data = resp.data;
@@ -118,19 +120,6 @@ function loadBaza() {
         baza.removeCollection("klasy");
     baza.addCollection("klasy");
 
-    //if (!baza.getCollection("users"))
-    //    baza.addCollection("users");
-    //else baza.removeCollection("users")
-
-    //if(!baza.getCollection("konie"))
-    //    baza.addCollection("konie")
-
-    //if(!baza.getCollection("sedziowie"))
-    //    baza.addCollection("sedziowie")
-    
-    //if (!baza.getCollection("klasy")) {
-    //    baza.addCollection("klasy")
-    //}
     fill();
 }
 
@@ -163,6 +152,51 @@ io.sockets.on('connection', (socket) => {
     });
 });
 
+function updateKonie() {
+    let collection = baza.getCollection('konie');
+    let konie = baza.getCollection('konie').find({});
+    let klasy = baza.getCollection('klasy').find({});
+    let ileklas = 0;
+    klasy.forEach(element => {
+        if (element["numer"] > ileklas)
+            ileklas = element["numer"];
+    });
+
+    for (let i = 1; i <= ileklas; i++) {
+        konie = baza.getCollection('konie').find({ 'klasa': { '$eq': i } });
+
+        konie.sort(function (a, b) {
+            return a["numer"] - b["numer"];
+        });
+        let nr = 1;
+        konie.forEach(kon => {
+            kon["miejsce"] = 0;
+            kon["numer"] = nr;
+            nr++;
+            collection.update(kon);
+        });
+        //najpierw sort rozjemca, potem cos i costam i wtedy wyniki
+        konie.sort(function (a, b) {
+            return b["wyniki"]["wyniksum"] - a["wyniki"]["wyniksum"];
+        });
+        nr = 1;
+        konie.forEach(kon => {
+            //TODO: sprawdzaj sumcos i costam i rozjemce!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            kon["miejsce"] = nr;
+            nr++;
+            collection.update(kon);
+        });
+    }
+    //klasy.forEach((klasa) => {
+    //let nr = 1;//klasa["numer"];
+    //    konie = baza.getCollection('konie').find({ 'klasa': { '$eq': nr } });
+    //    konie.forEach((kon) => {
+    //        kon["numer"] = 3;
+    //        collection.update(kon);
+    //    });
+    //});
+
+}
 
 app.get('/sedziowie', (_req, res) => {
     let sedziowie = baza.getCollection('sedziowie');
@@ -304,6 +338,7 @@ app.delete('/konie/:id', (req, res) => {
             collection.update(element);
         }
     });
+    updateKonie(); //TODO: czy to wyzej jest wymagane?
     io.emit('ocenEmit', 6);   //emity
     res.send("Deleted");
 });
@@ -355,6 +390,7 @@ app.post('/konie', (req, res) => {
     });
     
     req.body["numer"] = numer;
+    req.body["klasa"] = parseInt(req.body["klasa"]);
 
     //konie.forEach((element) => {
     //    if (element["numer"] == numer) {
@@ -364,6 +400,7 @@ app.post('/konie', (req, res) => {
     //    }
     //});
     collection.insert(req.body);
+    updateKonie();
     io.emit('ocenEmit', 6);   //emity
     res.send("posted");
 });
@@ -397,11 +434,13 @@ app.put('/sedziowie', (req, res) => {
 });
 
 app.put('/konie', (req, res) => {
+    req.body["klasa"] = parseInt(req.body["klasa"]);
     let collection = baza.getCollection('konie');
     let test = baza.getCollection('konie').find({});
     let klasa = req.body["klasa"];
     let numer = req.body["numer"];
     let konie = [];
+
 
     test.forEach((element) => {
         if (element["klasa"] == klasa)
@@ -434,7 +473,15 @@ app.put('/konie', (req, res) => {
     //sort i sprawdzenie wszystkich klas?
 
     collection.update(req.body);
-    io.emit('ocenEmit', 6);   //emity
+
+    setTimeout(() => {
+        updateKonie();
+
+        setTimeout(() => {
+            io.emit('ocenEmit', 6);
+        }, 500);
+    }, 500);
+       //emity
     res.send("updated");
 });
 
