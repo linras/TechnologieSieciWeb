@@ -175,9 +175,24 @@ function updateKonie() {
             nr++;
             collection.update(kon);
         });
-        //najpierw sort rozjemca, potem cos i costam i wtedy wyniki
+        //najpierw sort rozjemca, potem sumaruch i sumatyp i wtedy wyniki
         konie.sort(function (a, b) {
-            return b["wyniki"]["wyniksum"] - a["wyniki"]["wyniksum"];
+            let war1 = b["wyniki"]["wyniksum"] - a["wyniki"]["wyniksum"];
+            let war2 = b["wyniki"]["typsum"] - a["wyniki"]["typsum"];
+            let war3 = b["wyniki"]["ruchsum"] - a["wyniki"]["ruchsum"];
+            let war4 = a["wyniki"]["rozjemca"] - b["wyniki"]["rozjemca"];
+            if (war1 != 0) {
+                return war1;
+            } else if (war2 != 0) {
+                //console.log("war2" + a["nazwa"] + b["nazwa"]+war2);
+                return war2;
+            } else if (war3 != 0) {
+                //console.log("war3");
+                return war3;
+            } else {
+                //console.log("war4");
+                return war4;
+            }
         });
         nr = 1;
         konie.forEach(kon => {
