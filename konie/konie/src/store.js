@@ -9,7 +9,8 @@ function builder() {
         state: {
             sedziowie: [],
             konie: [],
-            klasy: []
+            klasy: [],
+            user: {}
         },
 
         mutations: {
@@ -40,6 +41,15 @@ function builder() {
                     .catch(err => {
                         console.log(err);
                     });
+
+                axios
+                    .get('http://192.168.0.150:4000/kto')
+                    .then(response => {
+                        state.user = response.data;
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
             },
 
             edit: (state, a) => {
@@ -105,6 +115,9 @@ function builder() {
             },
             getKonie: (state) => {
                 return state.konie;
+            },
+            getUser: (state) => {
+                return state.user;
             },
             getSedzia: (state) => (id) => {
                 return state.sedziowie.filter(e => {

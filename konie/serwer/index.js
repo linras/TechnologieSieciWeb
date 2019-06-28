@@ -1,16 +1,46 @@
 /*jshint node: true, esversion: 6 */
 'use strict';
 const loki = require('lokijs');
-const app = require('express')();
+var express = require('express');
+const app = express();
 const port = process.env.PORT || 4000;
 const axios = require('axios');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var passport = require('passport');
+var Strategy = require('passport-local').Strategy;
+var db = require('./db');
 
 app.use(bodyParser.json());
 app.use(cors());
+passport.use(new Strategy(
+    function (username, password, cb) {
+        db.users.findByUsername(username, function (err, user) {
+            if (err) { return cb(err); }
+            if (!user) { return cb(null, false); }
+            if (user.password != password) { return cb(null, false); }
+            return cb(null, user);
+        });
+    }));
+passport.serializeUser(function (user, cb) {
+    cb(null, user.id);
+});
+
+passport.deserializeUser(function (id, cb) {
+    db.users.findById(id, function (err, user) {
+        if (err) { return cb(err); }
+        cb(null, user);
+    });
+});
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(require('morgan')('combined'));
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 let baza = new loki('konie.db',{
     autoload:true,
@@ -141,6 +171,18 @@ io.sockets.on('connection', (socket) => {
 });
 
 io.sockets.on('connection', (socket) => {
+    socket.on('logEmit', () => {
+        io.emit('logEmit');
+    });
+});
+
+io.sockets.on('connection', (socket) => {
+    socket.on('logOUTEmit', () => {
+        io.emit('logOUTEmit');
+    });
+});
+
+io.sockets.on('connection', (socket) => {
     socket.on('klasaChanged', () => {
         io.emit('klasaChanged');
     });
@@ -196,20 +238,11 @@ function updateKonie() {
         });
         nr = 1;
         konie.forEach(kon => {
-            //TODO: sprawdzaj sumcos i costam i rozjemce!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             kon["miejsce"] = nr;
             nr++;
             collection.update(kon);
         });
     }
-    //klasy.forEach((klasa) => {
-    //let nr = 1;//klasa["numer"];
-    //    konie = baza.getCollection('konie').find({ 'klasa': { '$eq': nr } });
-    //    konie.forEach((kon) => {
-    //        kon["numer"] = 3;
-    //        collection.update(kon);
-    //    });
-    //});
 
 }
 
@@ -506,6 +539,45 @@ app.put('/klasy', (req, res) => {
     io.emit('klasaChanged', 6);
     res.send("updated");
 });
+
+app.get('/',
+    function (req, res) {
+        res.render('home', { user: req.user });
+    });
+
+app.get('/login',
+    function (req, res) {
+        res.render('login');
+    });
+
+app.post('/login',
+    passport.authenticate('local', { failureRedirect: '/login' }),
+    function (req, res) {
+        io.emit('logEmit', req.user);
+        console.log("BUAHAHAHHA" + req.user);
+        res.redirect('http://192.168.0.150:8080/konie/panel');
+    });
+
+app.get('/logout',
+    function (req, res) {
+        req.logout();
+        io.emit('logOUTEmit', 6);
+        setTimeout(() => {
+            res.redirect('http://192.168.0.150:8080/konie/panel');
+        }, 500);
+    });
+
+app.get('/profile',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('profile', { user: req.user });
+    });
+
+app.get('/kto',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.send({ user: req.user });
+    });
 
 app.listen(port, () => {
     console.log(`Serwer działa na porcie ${port}.`);

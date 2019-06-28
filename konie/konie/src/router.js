@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'panel',
+      component: () => import("./views/Panel.vue")
     },
     {
       path: '/about',

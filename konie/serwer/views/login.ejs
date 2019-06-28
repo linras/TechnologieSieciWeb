@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+
+        input[type=text], input[type=password] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        }
+
+        button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        }
+
+        button:hover {
+        opacity: 0.9;
+        }
+
+        .container {
+        padding: 16px;
+        }
+
+        span.psw {
+        float: right;
+        padding-top: 16px;
+        }
+
+        @media screen and (max-width: 300px) {
+        span.psw {
+        display: block;
+        float: none;
+        }
+        }
+      </style>
+    </head>
+  <body>
+
+    <h2>Logowanie</h2>
+
+      <div class="container">
+        <form action="/login" method="post">
+          <div>
+            <b>Użytkownik:</b>
+            <input type="text" name="username"/>
+            <br/>
+          </div>
+          <div>
+            <b>Hasło:</b>
+            <input type="password" name="password"/>
+          </div>
+          <div>
+            <button type="submit" value="Submit"> OK </button>
+          </div>
+        </form>
+
+          </div>
+  </body>
+</html>

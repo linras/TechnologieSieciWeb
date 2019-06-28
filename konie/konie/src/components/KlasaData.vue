@@ -16,7 +16,7 @@
                 <td>{{ item['kat'] }}</td>
                 <td>
                     <span v-for="sedzia in item['sedziowie']" v-bind:key="sedzia">
-                <td>{{ sedzia }} </td> </span>
+                {{ sedzia }}  </span>
                 </td>
                 <td>
                     <router-link :to="{ name: 'klasa', params: { id: item['$loki'] }}">Edytuj</router-link>
@@ -73,35 +73,23 @@
 </script>
 
 <style>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+    a {
+        color: #42b983;
+        padding: 20px;
+    }
 
-table thead tr th {
-  color: white;
-  font-size: 18px;
-}
-table tfoot tr th {
-  color: white;
-  font-size: 18px;
-}
-table tbody tr td {
-  color: white;
-  font-size: 16px;
-}
+    table, td, th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
 
-table {
-    margin: auto;
-}
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 90%;
+    }
+
+    th, td {
+        padding: 15px;
+    }
 </style>

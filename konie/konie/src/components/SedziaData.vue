@@ -54,10 +54,23 @@
 </script>
 
 <style>
-a {
-  color: #42b983;
-}
-table {
-    margin: auto;
-}
+    a {
+        color: #42b983;
+        padding: 20px;
+    }
+
+    table, td, th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 90%;
+    }
+
+    th, td {
+        padding: 15px;
+    }
 </style>
