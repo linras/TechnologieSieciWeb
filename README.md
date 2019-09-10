@@ -1,3 +1,2 @@
-# Antonina Brzeska
+Here are some small exercises and project in Vue.js
 
-email: aformela2@sigma.ug.edu.pl
